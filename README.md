@@ -47,4 +47,15 @@ CASPER/
 CASPER has been tested using `Clingo 5.8.0` and `Python 3.12.9`.
 
 ### Prerequisites
+> An easy way to set up the required configuration is to use Conda to create an environment with the specified Python version and install Clingo.
 
+### 🔧 Recommended Setup (Using Conda)
+
+You can easily configure the environment using [Conda](https://docs.conda.io/en/latest/):
+
+```bash
+conda create -n casper-env python=3.12.9
+conda activate casper-env
+pip install clingo==5.8.0
+```
+> 📌 Make sure `pip` is available in the Conda environment, or install it with `conda install pip`.
