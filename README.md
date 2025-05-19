@@ -56,6 +56,5 @@ You can easily configure the environment using [Conda](https://docs.conda.io/en/
 ```bash
 conda create -n casper-env python=3.12.9
 conda activate casper-env
-pip install clingo==5.8.0
+conda install -c conda-forge clingo=5.8.0
 ```
-> 📌 Make sure `pip` is available in the Conda environment, or install it with `conda install pip`.
