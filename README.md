@@ -22,7 +22,7 @@ CASPER/
 │       │   └── facts.lp              # Observation facts file
 │       └── user_parameters/          # Folder for event description
 │           ├── simple_event.lp       # Simple event definition file
-│           └── domain_knowledge.lp   # Meta-event defintion file
+│           └── meta_event.lp   # Meta-event defintion file
 ├── encoding/                         # CASPER system core
 │   ├── expansion.lp                  # Expansion technique encoding
 │   ├── linear.lp                     # Linear technique encoding
