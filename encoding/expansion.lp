@@ -7,9 +7,9 @@
 no_need_more_expansion(N) :- exists_level_count(N, C); C <= 2.
 
 % period of the event
-period(N, E, D) :- provided_period(N, E, D).
-period(E, D) :- not provided_period(_, E, _); default_period(E, D); exists(_, _, E, _, _).
-period(E, D) :- not provided_period(_, E, _); default_period(E, D); terminates(_, _, E, _, _).
+period(N, E, D) :- pt_window(N, E, D).
+period(E, D) :- not pt_window(_, E, _); default_period(E, D); exists(_, _, E, _, _).
+period(E, D) :- not pt_window(_, E, _); default_period(E, D); terminates(_, _, E, _, _).
 
 % find the termination time of the event
 pre_end_obs(N, P, E, (T, Tnext), L) :- exists(N, P, E, T, L1); terminates(N, P, E_, Tnext, L); period(N, E, D); Tnext <= (T + D); Tnext > T;
