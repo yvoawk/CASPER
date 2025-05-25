@@ -7,9 +7,9 @@
 no_need_more_expansion(N) :- exists_level_count(N, C); C <= 2.
 
 % period of the event
-period(N, E, D) :- provided_period(N, E, D).
-period(E, D) :- not provided_period(_, E, _); default_period(E, D); exists(_, _, E, _, _).
-period(E, D) :- not provided_period(_, E, _); default_period(E, D); terminates(_, _, E, _, _).
+period(N, E, D) :- pt_window(N, E, D).
+period(E, D) :- not pt_window(_, E, _); default_period(E, D); exists(_, _, E, _, _).
+period(E, D) :- not pt_window(_, E, _); default_period(E, D); terminates(_, _, E, _, _).
 
 % find the termination time of the event
 pre_end_obs(N, P, E, (T, Tnext), L) :- exists(N, P, E, T, L1); terminates(N, P, E_, Tnext, L); period(N, E, D); Tnext <= (T + D); Tnext > T;
@@ -85,27 +85,26 @@ pre_candidate(N, P, E, (T1, T2_), L) :- not no_need_more_expansion(N); highest_e
 e_candidate(N, P, E, (T1, T2_), L) :- pre_candidate(N, P, E, (T1, T2_), L); not pre_covered(N, P, E, (T1, T2_), L).
 
 % second expansion with other priority levels
-e_candidate(N, P, E, (T1, T2_), L) :- e_candidate(N, P, E, (T1, T2), Lx); e_candidate(N, P, _, (T1_, T2_), L); L > Lx; period(N, E, D); T1_ <= (T2 + D); T1_ > T2;
+e_candidate(N, P, E, (T1, T2_), L) :- e_candidate(N, P, E, (T1, T2), Lx); e_candidate(N, P, _, (T1_, T2_), L); L >= Lx; period(N, E, D); T1_ <= (T2 + D); T1_ > T2;
     not terminates(N, P, _, Tx, _) : valid_time(Tx), T2 <= Tx, Tx <= T1_.
 
-e_candidate(N, P, E, (T1, T2_), L) :- e_candidate(N, P, E, (T1, T2), Lx); e_candidate(N, P, _, (T1_, T2_), L); L > Lx; period(E, D); T1_ <= (T2 + D); T1_ > T2;
+e_candidate(N, P, E, (T1, T2_), L) :- e_candidate(N, P, E, (T1, T2), Lx); e_candidate(N, P, _, (T1_, T2_), L); L >= Lx; period(E, D); T1_ <= (T2 + D); T1_ > T2;
     not terminates(N, P, _, Tx, _) : valid_time(Tx), T2 <= Tx, Tx <= T1_.
 
 % backward expansion of event
 % second expansion with other priority levels
-e_candidate(N, P, E, (T1_, T2), L) :- e_candidate(N, P, E, (T1, T2), Lx); e_candidate(N, P, _, (T1_, T2_), L); L > Lx; period(N, E, D); T2_ >= (T1 - D); T2_ < T1;
+e_candidate(N, P, E, (T1_, T2), L) :- e_candidate(N, P, E, (T1, T2), Lx); e_candidate(N, P, _, (T1_, T2_), L); L >= Lx; period(N, E, D); T2_ >= (T1 - D); T2_ < T1;
     not terminates(N, P, _, Tx, _) : valid_time(Tx), T2_ <= Tx, Tx <= T1.
 
-e_candidate(N, P, E, (T1_, T2), L) :- e_candidate(N, P, E, (T1, T2), Lx); e_candidate(N, P, _, (T1_, T2_), L); L > Lx; period(E, D); T2_ >= (T1 - D); T2_ < T1;
+e_candidate(N, P, E, (T1_, T2), L) :- e_candidate(N, P, E, (T1, T2), Lx); e_candidate(N, P, _, (T1_, T2_), L); L >= Lx; period(E, D); T2_ >= (T1 - D); T2_ < T1;
     not terminates(N, P, _, Tx, _) : valid_time(Tx), T2_ <= Tx, Tx <= T1.
 
 % expansion with termination condition
 e_candidate(N, P, E, (T1, Tf), L) :- e_candidate(N, P, E, (T1, T2), L1); end_obs(N, P, E, (T2, Tf), L2);
     L = #max{ Lx : e_candidate(N, P, E, (T1, T2), Lx); Ly : end_obs(N, P, E, (T2, Tf), Ly) }.
 
-% overlap e_candidate
+% meet e_candidate
 e_candidate(N, P, E, (T1, T2), L) :- e_candidate(N, P, E, (T1, T), L); e_candidate(N, P, E, (T, T2), L).
-e_candidate(N, P, E, (T1, T2), L) :- e_candidate(N, P, E, (T1, T2_), L); e_candidate(N, P, E, (T1_, T2), L); T1 < T1_; T2_ > T1_; T2_ < T2.
 
 % final event
 event(@get_id(N, P, E, T1, T2_), N, P, E, (T1, T2_), L) :- e_candidate(N, P, E, (T1, T2_), L); not covered(N, P, E, (T1, T2_), L).

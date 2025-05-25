@@ -12,7 +12,7 @@ VERSION="1.0.0"
 REPAIR="no"
 THREADS=1
 VERBOSE="no"
-SOLUTION="max"
+TIMELINE="naïve"
 WINDOW=""
 WIN_START=""
 WIN_END=""
@@ -28,8 +28,8 @@ show_help() {
   echo
   echo "Options:"
   echo "  --repair=(yes|no)        Enable or disable repair mode (default: no)"
-  echo "  --solution=MODE          Solution mode (max|preferred|safest) (default: max)"
-  echo "                           Note: 'preferred' & 'safest' can only be used with --repair=yes"
+  echo "  --timeline=MODE          Timeline mode (naïve|preferred|cautious) (default: naïve)"
+  echo "                           Note: 'preferred' & 'cautious' can only be used with --repair=yes"
   echo "  --thread-N=N             Number of parallel threads (default: 1)"
   echo "  --window=start-end       Time window for event recognition (format: start-end, both numeric)"
   echo "  --verbose                Print configuration before execution"
@@ -57,8 +57,8 @@ while [[ $# -gt 0 ]]; do
   --verbose)
     VERBOSE="yes"
     ;;
-  --solution=*)
-    SOLUTION="${1#*=}"
+  --timeline=*)
+    TIMELINE="${1#*=}"
     ;;
   --help)
     show_help
@@ -114,26 +114,26 @@ if [[ -n "$WINDOW" ]]; then
   fi
 fi
 
-case "$SOLUTION" in
-max)
-  SOL_MODE="auto"
+case "$TIMELINE" in
+naïve)
+  MODE="auto"
   ;;
-safest)
+cautious)
   if [[ "$REPAIR" != "yes" ]]; then
-    echo "❌ --solution=safest can only be used when --repair=yes"
+    echo "❌ --timeline=cautious can only be used when --repair=yes"
     exit 1
   fi
-  SOL_MODE="cautious"
+  MODE="cautious"
   ;;
 preferred)
   if [[ "$REPAIR" != "yes" ]]; then
-    echo "❌ --solution=preferred can only be used when --repair=yes"
+    echo "❌ --timeline=preferred can only be used when --repair=yes"
     exit 1
   fi
-  SOL_MODE="auto"
+  MODE="auto"
   ;;
 *)
-  echo "❌ Invalid --solution value: $SOLUTION (must be max, safest, or preferred)"
+  echo "❌ Invalid --timeline value: $TIMELINE (must be naïve, preferred or cautious)"
   exit 1
   ;;
 esac
@@ -173,7 +173,7 @@ echo "📦 Running CASPER v$VERSION"
   echo "App:            $APP"
   echo "Repair mode:    $REPAIR"
   echo "Threads:        $THREADS"
-  echo "Solution:       $SOLUTION"
+  echo "Timeline:       $TIMELINE"
   [[ -n "$WINDOW" ]] && echo "Time window:    $WINDOW"
   echo "Simple event:   found"
   [[ -f "$META_EVENT" ]] && echo "Meta-event:     found" || echo "Meta-event:  not found"
@@ -181,7 +181,7 @@ echo "📦 Running CASPER v$VERSION"
   echo "============================================================="
 }
 
-BASE_OPTS="--mode=clingo --opt-mode=optN --models 0 --parallel-mode=$THREADS --outf=2 --stats=2 --enum-mode=$SOL_MODE"
+BASE_OPTS="--mode=clingo --opt-mode=optN --models 0 --parallel-mode=$THREADS --outf=2 --stats=2 --enum-mode=$MODE"
 
 if [[ "$WINDOW" ]]; then
   echo "🔍 Applying time window: $WINDOW"
@@ -206,7 +206,7 @@ if [[ "$REPAIR" == "no" ]]; then
 
 else
   echo "🔧 Stage 1: Simple events with repair..."
-  if [[ "$SOLUTION" == "preferred" ]]; then
+  if [[ "$TIMELINE" == "preferred" ]]; then
     clingo $BASE_OPTS $BASE_FILES "$SIMPLE_EVENT" ./encoding/repair.lp ./execution/parameters3.lp ./encoding/preference.lp >"$TEMP_JSON"
   else
     clingo $BASE_OPTS $BASE_FILES "$SIMPLE_EVENT" ./encoding/repair.lp ./execution/parameters3.lp >"$TEMP_JSON"

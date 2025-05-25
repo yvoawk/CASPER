@@ -9,9 +9,6 @@
 % an event should not be equals to another event of the same type
 :- rep_event(ID1, N, P, E, (Start, End), _), rep_event(ID2, N, P, E, (Start, End), _), ID1 != ID2, equals((Start, End), (Start, End)).
 
-% an event should not be overlaps by another event of the same type
-:- rep_event(_, N, P, E, (Start1, End1), _), rep_event(_, N, P, E, (Start2, End2), _), overlaps((Start1, End1), (Start2, End2)).
-
 % an event should not be contains by by another event of the same type
 :- rep_event(_, N, P, E, (Start1, End1), _), rep_event(_, N, P, E, (Start2, End2), _), contains((Start1, End1), (Start2, End2)).
 

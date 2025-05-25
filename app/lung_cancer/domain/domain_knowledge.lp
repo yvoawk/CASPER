@@ -1,8 +1,3 @@
-% default period
-default_period(E, 63072000):- primary_cancer(E).
-default_period(E, 63072000):- secondary_cancer(E).
-default_period(E, 63115200):- lung_cancer_adicap(E).
-
 % lung cancer adicap
 lung_cancer_adicap(rbe7a0).
 lung_cancer_adicap(rba7v4).
