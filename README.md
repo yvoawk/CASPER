@@ -38,7 +38,7 @@ CASPER/
 │   ├── auxiliary.lp                  # Helper predicate
 │   ├── filter_fact.py                # Python function to filter observation facts  
 │   ├── process_answer.py             # Processeing meta-event script      
-│   └── python/lp                     # Embedded Python utility function
+│   └── python.lp                     # Embedded Python utility function
 └── LICENSE                           # License file
 ```
 
@@ -58,3 +58,39 @@ conda create -n casper-env python=3.12.9
 conda activate casper-env
 conda install -c conda-forge clingo=5.8.0
 ```
+### ▶️ Basic Execution
+```bash
+./execution/run_casper.sh --app=lung_cancer
+```
+> The results will be output to a subfolder named after your application, located inside the results directory.
+
+To view usage instructions or available options for CASPER, use the --help flag:
+```bash
+./execution/run_casper.sh --help
+```
+The output:
+```bash
+CASPER version 1.0.0
+Usage: ./execution/run_casper.sh --app=APP_NAME [OPTIONS]
+
+Required:
+  --app=APP_NAME           Name of the app (must match a folder in ./app/ and not contain spaces)
+
+Options:
+  --repair=(yes|no)        Enable or disable repair mode (default: no)
+  --timeline=MODE          Timeline mode (naïve|preferred|cautious) (default: naïve)
+                           Note: 'preferred' & 'cautious' can only be used with --repair=yes
+  --thread-N=N             Number of parallel threads (default: 1)
+  --window=start-end       Time window for event recognition (format: start-end, both numeric)
+  --verbose                Print configuration before execution
+  --help                   Show helper message
+  --version                Show CASPER version information
+```
+
+#
+
+📜 License
+
+MIT License - See [LICENSE](https://github.com/yvoawk/CASPER/blob/master/LICENSE).
+#
+Created with ❤️ by [Yvon AWUKLU](https://github.com/yvoawk). Need help? [Open an issue](https://github.com/yvoawk/CASPER/issues).
