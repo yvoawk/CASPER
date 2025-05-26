@@ -162,8 +162,8 @@ DATE=$(date +"%Y-%m-%d_%H-%M-%S")
 OUTPUT="$RESULTS_DIR/results_${DATE}.json"
 TEMP_JSON="./temp_stage1_${DATE}.json"
 
-BASE_FILES="$APP_DIR/facts/facts.lp ./encoding/expansion.lp ./encoding/linear.lp $APP_DIR/domain/domain_knowledge.lp ./utils/auxiliary.lp"
-BASE_FILES_2="$APP_DIR/facts/facts.lp $APP_DIR/user_parameters/simple_event.lp $APP_DIR/domain/domain_knowledge.lp ./utils/auxiliary.lp ./execution/parameters1.lp"
+BASE_FILES="$APP_DIR/facts/facts.lp ./encoding/expansion.lp ./encoding/linear.lp $APP_DIR/domain/atemporal_facts.lp ./utils/auxiliary.lp"
+BASE_FILES_2="$APP_DIR/facts/facts.lp $APP_DIR/user_parameters/simple_event.lp $APP_DIR/domain/atemporal_facts.lp ./utils/auxiliary.lp ./execution/parameters1.lp"
 
 echo "📦 Running CASPER v$VERSION"
 
@@ -190,8 +190,8 @@ if [[ "$WINDOW" ]]; then
     echo "❌ Error: Failed to filter facts with time window."
     exit 1
   fi
-  BASE_FILES="$FILTER_FACTS $APP_DIR/user_parameters/simple_event.lp $APP_DIR/domain/domain_knowledge.lp ./utils/auxiliary.lp ./encoding/expansion.lp ./encoding/linear.lp"
-  BASE_FILES_2="$FILTER_FACTS $APP_DIR/user_parameters/simple_event.lp $APP_DIR/domain/domain_knowledge.lp ./utils/auxiliary.lp ./execution/parameters1.lp"
+  BASE_FILES="$FILTER_FACTS $APP_DIR/user_parameters/simple_event.lp $APP_DIR/domain/atemporal_facts.lp ./utils/auxiliary.lp ./encoding/expansion.lp ./encoding/linear.lp"
+  BASE_FILES_2="$FILTER_FACTS $APP_DIR/user_parameters/simple_event.lp $APP_DIR/domain/atemporal_facts.lp ./utils/auxiliary.lp ./execution/parameters1.lp"
 fi
 
 if [[ "$REPAIR" == "no" ]]; then
