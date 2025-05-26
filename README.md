@@ -17,7 +17,7 @@ CASPER/
 ├── app/                              # Application directory
 │   └── lung_cancer/                  # Use case on lung cancer
 │       └── domain/                   # Folder for domain knowledge
-│       │   └── domain_knowledge.lp   # Domain knowledge description file
+│       │   └── atemporal_facts.lp    # Relevant atemporal domain knowledge file
 │       ├── facts/                    # Folder for facts
 │       │   └── facts.lp              # Observation facts file
 │       └── user_parameters/          # Folder for event description
