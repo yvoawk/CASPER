@@ -59,6 +59,7 @@ conda activate casper-env
 conda install -c conda-forge clingo=5.8.0
 ```
 ### ▶️ Basic Execution
+An example application focused on `lung cancer` can be found in the `./app` directory.
 ```bash
 ./execution/run_casper.sh --app=lung_cancer
 ```
@@ -86,11 +87,97 @@ Options:
   --help                   Show helper message
   --version                Show CASPER version information
 ```
+## 📦 How to Add Your Application
 
-#
+To add a new application, create a folder named after your application (no spaces) in the `./app` directory. This folder should follow the structure below:
+```text
+./app/your_application_name/
+├── domain/
+│   └── atemporal_facts.lp
+├── facts/
+│   └── facts.lp
+├── user_parameters/
+│   ├── simple_event.lp
+│   └── meta_event.lp  (optional)
+```
+
+### Folder Descriptions
+
+- `domain/atemporal_facts.lp`:  
+  Contains atemporal domain knowledge relevant to your application.
+
+- `facts/facts.lp`:  
+  Contains observation facts for your application.
+
+- `user_parameters/simple_event.lp`:  
+  Defines **simple events**, both persistent and non-persistent.
+
+- `user_parameters/meta_event.lp` *(optional)*:  
+  Defines **meta-events**, if your application includes any.
+
+## 🧠 Predicates
+
+### Observation
+
+- `obs([observation_name], [Patient], ..., [Time])`:  
+  Defines an observation fact at a given time.
+
+### Event Existence
+
+- `exists([event_name], [Patient], [entity], [Time], [confidence_level])`:  
+  Specifies the existence of a **non-persistent** simple event.
+
+- `exists_pers([event_name], [Patient], [entity], [Time], [confidence_level])`:  
+  Specifies the existence of a **persistent** simple event.
+
+> ⚠️ **Note**:  
+> - The `Time` argument must be a non-null integer.  
+> - CASPER currently supports **three levels of confidence** for initiation: `1` (highest), `2`, and `3` (lowest), and **one level for termination**.
+
+### Termination
+
+- `terminates(...)`:  
+  Indicates the termination condition for both persistent and non-persistent simple events.  
+  Same format as `exists` and `exists_pers`.
+
+### Time Window
+
+- `pt_window([event_name], [entity], [time_period])`:  
+  Specifies the time window for identifying non-persistent simple events.
+
+## ⏱ Temporal Reasoning for Meta-Events
+
+### Interval Operations
+
+- `intersection_of((T1,T2), (T3,T4), (T, T'))`:  
+  Computes the intersection `(T, T')` of two intervals.
+  Example:
+intersection_of((T1,T2), (T3,T4), (T,T')) computes the intersection (T, T') of intervals (T1, T2) and (T3, T4).
+
+- `union_of(...)`:  
+  Computes the union of two time intervals.
+
+### Allen Relations
+
+You can express temporal relations between intervals using **Allen’s interval algebra**. All 13 relations are supported (e.g., *before*, *during*, *overlaps*, etc.).
+
+## 🔧 Helper Predicates
+
+- `start([event_name], [Patient], [Time], [confidence_level])`:  
+  Returns the **earliest** time point of a given event.
+
+- `end([event_name], [Patient], [Time], [confidence_level])`:  
+  Returns the **latest** time point of a given event.
+
+- `persist_end(...)`:  
+  Indicates that the end time of a persistent event is ongoing.
+
+---
 
 📜 License
 
 MIT License - See [LICENSE](https://github.com/yvoawk/CASPER/blob/master/LICENSE).
-#
-Created with ❤️ by [Yvon AWUKLU](https://github.com/yvoawk). Need help? [Open an issue](https://github.com/yvoawk/CASPER/issues).
+---
+📬 Contact
+
+For questions or contributions, please [open an issue](https://github.com/yvoawk/CASPER/issues) or contact the [maintainers](mailto:.....).
