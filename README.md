@@ -169,7 +169,7 @@ You can express temporal relations between intervals using **Allen’s interval 
 - `end([event_name], [Patient], [Time], [confidence_level])`:  
   Returns the **latest** time point of a given event.
 
-- `persist_end(...)`:  
+- `persist_end([Patient], [Time])`:  
   Indicates that the end time of a persistent event is ongoing.
 
 ---
