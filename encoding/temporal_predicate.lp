@@ -1,6 +1,6 @@
 % ==============================================================================
 % CASPER version v1.0.0
-% Author: Yvon K. Awuklu
+% Author: XXXX XXXXXX
 % Description: temporal predicates encoding
 % ==============================================================================
 
@@ -192,6 +192,45 @@ meets((Start1, End1), (Start2, End2)) :-
 % The first interval is met by the second interval
 met_by((Start1, End1), (Start2, End2)) :-
     Start1 < End1;
+    Start2 < End2;
+    Start1 = End2;
+    e_interval(Start1, End1); e_interval(Start2, End2).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Vilian's point-interval algebra %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% point before interval
+p_before((Start1, End1), (Start2, End2)) :-
+    Start1 = End1;
+    Start2 < End2;
+    Start1 < Start2;
+    e_interval(Start1, End1); e_interval(Start2, End2).
+
+% point after interval
+p_after((Start1, End1), (Start2, End2)) :-
+    Start1 = End1;
+    Start2 < End2;
+    Start1 > End2;
+    e_interval(Start1, End1); e_interval(Start2, End2).
+
+% point during interval
+p_during((Start1, End1), (Start2, End2)) :-
+    Start1 = End1;
+    Start2 < End2;
+    Start2 < Start1 < End2;
+    e_interval(Start1, End1); e_interval(Start2, End2).
+
+% point starts interval
+p_starts((Start1, End1), (Start2, End2)) :-
+    Start1 = End1;
+    Start2 < End2;
+    Start1 = Start2;
+    e_interval(Start1, End1); e_interval(Start2, End2).
+
+% point finishes interval    
+p_finishes((Start1, End1), (Start2, End2)) :-
+    Start1 = End1;
     Start2 < End2;
     Start1 = End2;
     e_interval(Start1, End1); e_interval(Start2, End2).
