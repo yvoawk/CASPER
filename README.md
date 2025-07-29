@@ -28,7 +28,7 @@ CASPER/
 │   ├── linear.lp                     # Linear technique encoding
 │   ├── preference.lp                 # Preference encoding
 │   ├── repair.lp                     # Repair process encoding
-│   └── temporal_predicate.lp         # Temporal predicate encoding (Allen's interval algebra relation, etc.)
+│   └── temporal_predicate.lp         # Temporal predicate encoding (Allen's interval algebra relations, Vilain's point interval algebra relations, etc.)
 ├── execution/                        # Execution folder
 │   ├── parameters1.lp    
 │   ├── parameters2.lp            
@@ -145,21 +145,40 @@ To add a new application, create a folder named after your application (no space
 - `pt_window([event_name], [entity], [time_period])`:  
   Specifies the time window for identifying non-persistent simple events.
 
-## ⏱ Temporal Reasoning for Meta-Events
+### Event
+
+- `event([ID], [event_name], [Patient], [Entity], ([Start], [End]), [Confidence])`:
+  
+  Events capture clinically meaningful patterns identified from observations.
+
+### Meta-Event
+
+- `m_event([meta_event_name], [Patient], [Entity], ([Start], [End]), [Confidence])`:
+  
+  Meta-events represent higher-level or composite clinical events derived from at least one simple event, based on temporal relationships or logical conjunctions.
+
+## ⏱ Temporal Reasoning
+
+The `temporal_predicate.lp` file defines the core predicates that enable `CASPER` to reason about the relative positions of timepoints and intervals. These predicates are essential for expressing and evaluating complex temporal relations between events, such as those required to construct meta-events.
 
 ### Interval Operations
 
 - `intersection_of((T1,T2), (T3,T4), (T, T'))`:  
   Computes the intersection `(T, T')` of two intervals.
+  
   Example:
-intersection_of((T1,T2), (T3,T4), (T,T')) computes the intersection (T, T') of intervals (T1, T2) and (T3, T4).
+  intersection_of((T1,T2), (T3,T4), (T,T')) computes the intersection (T, T') of intervals (T1, T2) and (T3, T4).
 
 - `union_of(...)`:  
   Computes the union of two time intervals.
 
-### Allen Relations
+### Allen's Relations
 
 You can express temporal relations between intervals using **Allen’s interval algebra**. All 13 relations are supported (e.g., *before*, *during*, *overlaps*, etc.).
+
+### Vilain’s Relations (Subset)
+
+Support for key point-based relations: `p_before/2, p_after/2, p_during/2, p_starts/2, p_finishes/2`.
 
 ## 🔧 Helper Predicates
 
@@ -171,6 +190,37 @@ You can express temporal relations between intervals using **Allen’s interval 
 
 - `persist_end([Patient], [Time])`:  
   Indicates that the end time of a persistent event is ongoing.
+
+## 🛠️ Support Features
+
+In addition to event inference, CASPER provides built-in support for:
+
+- Confidence Propagation
+  
+  Ensures that the confidence of inferred (simple or meta) events reflects the lowest confidence among their supporting observations and sub-events.
+
+  > ⚠️ CASPER supports up to 3 confidence levels for existence conditions (1 = high, 2, 3 = low), and a single level (1) for termination.
+
+- Repair Mode (Temporal Repair Only)
+  
+  CASPER includes a repair mechanism to handle overlapping event intervals of the same type, selecting the most appropriate segment(s) based on temporal consistency and confidence preferences.
+
+  > 🛠️ This allows correction of conflicting temporal segments.
+  >
+  > ❌ Domain repair (e.g., resolving logical inconsistencies in background knowledge) is currently not supported.
+
+- Parallel Execution
+  
+  Speed up computation by leveraging multiple threads via the `--thread-N` option. Useful for large-scale datasets or multiple patient timelines.
+
+- Preference Modes
+  When multiple temporal segments are possible for a given event, CASPER allows selection of the most clinically plausible one using:
+
+  - `naïve`: keep all
+  
+  - `preferred`: keep only the highest-confidence, longest-valid segments
+  
+  - `cautious`: prioritize minimal but safe segments
 
 ---
 
