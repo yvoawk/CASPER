@@ -201,7 +201,7 @@ In addition to event inference, CASPER provides built-in support for:
 
   > ⚠️ CASPER supports up to 3 confidence levels for existence conditions (1 = high, 2, 3 = low), and a single level (1) for termination.
 
-- Repair Mode (Temporal Repair Only)
+- Repair Option (Temporal Repair Only)
   
   CASPER includes a repair mechanism to handle overlapping event intervals of the same type, selecting the most appropriate segment(s) based on temporal consistency and confidence preferences.
 
