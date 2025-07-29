@@ -79,7 +79,7 @@ Required:
 
 Options:
   --repair=(yes|no)        Enable or disable repair mode (default: no)
-  --timeline=MODE          Timeline mode (naïve|preferred|cautious) (default: naïve)
+  --timeline=MODE          Timeline mode (naive|preferred|cautious) (default: naive)
                            Note: 'preferred' & 'cautious' can only be used with --repair=yes
   --thread-N=N             Number of parallel threads (default: 1)
   --window=start-end       Time window for event recognition (format: start-end, both numeric)
