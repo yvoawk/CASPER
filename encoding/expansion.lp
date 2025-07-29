@@ -1,6 +1,6 @@
 % ==============================================================================
 % CASPER version v1.0.0
-% Author: Yvon K. Awuklu
+% Author: XXXX XXXXXX
 % Description: Expansion technique for clinical event detection encoding
 % ==============================================================================
 

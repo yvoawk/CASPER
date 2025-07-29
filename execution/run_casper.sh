@@ -2,7 +2,7 @@
 
 # ==============================================================================
 # CASPER Workflow Runner Script (v1.0.0)
-# Author: Yvon K. Awuklu
+# Author: XXXX XXXXXX
 # Description: Executes Clinical ASP-based Event Recognition System
 # ==============================================================================
 
