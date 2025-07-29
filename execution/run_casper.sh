@@ -12,7 +12,7 @@ VERSION="1.0.0"
 REPAIR="no"
 THREADS=1
 VERBOSE="no"
-TIMELINE="naïve"
+TIMELINE="naive"
 WINDOW=""
 WIN_START=""
 WIN_END=""
@@ -28,7 +28,7 @@ show_help() {
   echo
   echo "Options:"
   echo "  --repair=(yes|no)        Enable or disable repair mode (default: no)"
-  echo "  --timeline=MODE          Timeline mode (naïve|preferred|cautious) (default: naïve)"
+  echo "  --timeline=MODE          Timeline mode (naive|preferred|cautious) (default: naive)"
   echo "                           Note: 'preferred' & 'cautious' can only be used with --repair=yes"
   echo "  --thread-N=N             Number of parallel threads (default: 1)"
   echo "  --window=start-end       Time window for event recognition (format: start-end, both numeric)"
@@ -115,7 +115,7 @@ if [[ -n "$WINDOW" ]]; then
 fi
 
 case "$TIMELINE" in
-naïve)
+naive)
   MODE="auto"
   ;;
 cautious)
@@ -133,7 +133,7 @@ preferred)
   MODE="auto"
   ;;
 *)
-  echo "❌ Invalid --timeline value: $TIMELINE (must be naïve, preferred or cautious)"
+  echo "❌ Invalid --timeline value: $TIMELINE (must be naive, preferred or cautious)"
   exit 1
   ;;
 esac
