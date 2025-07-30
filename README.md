@@ -155,7 +155,7 @@ To add a new application, create a folder named after your application (no space
 
 - `m_event([meta_event_name], [Patient], [Entity], ([Start], [End]), [Confidence])`:
   
-  Meta-events represent higher-level or composite clinical events derived from at least one simple event, based on temporal relationships or logical conjunctions.
+  Meta-events represent higher-level or composite clinical events derived from at least one event (simple or meta- event), based on temporal relationships or logical conjunctions.
 
 ## ⏱ Temporal Reasoning
 
