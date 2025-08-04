@@ -1,4 +1,8 @@
-% lung cancer adicap
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%  Cancer Domain - Atemporal Facts %%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% ADICAP Code for lung cancer
 lung_cancer_adicap(rbe7a0).
 lung_cancer_adicap(rba7v4).
 lung_cancer_adicap(rba7a0).
@@ -15,7 +19,7 @@ lung_cancer_adicap(rbe7t0).
 lung_cancer_adicap(rba7v2).
 lung_cancer_adicap(rba7a8).
 
-% drug
+% TKI drugs
 tki(ceritinib).
 tki(osimertinib).
 tki(crizotinib).
@@ -26,7 +30,7 @@ tki(afatinib).
 tki(lorlatinib).
 tki(gefitinib).
 
-% primary cancer icd10
+% primary cancer ICD-10
 primary_cancer(c340).
 primary_cancer(c341).
 primary_cancer(c342).
@@ -146,7 +150,7 @@ primary_cancer(c211).
 primary_cancer(c212).
 primary_cancer(c218).
 
-% Tumeur maligne du foie et des voies biliaires intrahépatiques
+% Liver and intrahepatic bile duct cancer
 primary_cancer(c220).
 primary_cancer(c221).
 primary_cancer(c222).
@@ -155,16 +159,16 @@ primary_cancer(c224).
 primary_cancer(c227).
 primary_cancer(c229).
 
-% Tumeur maligne de la vésicule biliaire
+% Biliary tract cancer
 primary_cancer(c23).
 
-% Tumeurs malignes des voies biliaires, autres et non précisées
+% Biliary tract cancer, unspecified
 primary_cancer(c240).
 primary_cancer(c241).
 primary_cancer(c248).
 primary_cancer(c249).
 
-% Tumeur maligne du pancréas
+% Pancreatic cancer
 primary_cancer(c250).
 primary_cancer(c251).
 primary_cancer(c252).
@@ -178,17 +182,17 @@ primary_cancer(c259).
 primary_cancer(c2590).
 primary_cancer(c2598).
 
-% Tumeur maligne des organes digestifs, de sièges autres et mal définis
+% Digestive organs cancer, unspecified
 primary_cancer(c260).
 primary_cancer(c261).
 primary_cancer(c268).
 primary_cancer(c269).
 
-% Tumeur maligne des fosses nasales et de l'oreille moyenne
+% Nasal cavity and middle ear cancer
 primary_cancer(c300).
 primary_cancer(c301).
 
-% Tumeur maligne des sinus de la face
+% Sinonasal cancer
 primary_cancer(c310).
 primary_cancer(c311).
 primary_cancer(c312).
@@ -196,7 +200,7 @@ primary_cancer(c313).
 primary_cancer(c318).
 primary_cancer(c319).
 
-% Tumeur maligne du larynx
+% Laryngeal cancer
 primary_cancer(c320).
 primary_cancer(c321).
 primary_cancer(c322).
@@ -204,13 +208,13 @@ primary_cancer(c323).
 primary_cancer(c328).
 primary_cancer(c329).
 
-% Tumeur maligne de la trachée
+% Tracheal cancer
 primary_cancer(c33).
 
-% Tumeur maligne du thymus
+% Thymic carcinoma
 primary_cancer(c37).
 
-% Tumeur maligne du cœur, du médiastin et de la plèvre
+% Heart, mediastinal and pleural cancer
 primary_cancer(c380).
 primary_cancer(c381).
 primary_cancer(c382).
@@ -218,12 +222,12 @@ primary_cancer(c383).
 primary_cancer(c384).
 primary_cancer(c388).
 
-% Tumeur maligne de l'appareil respiratoire et des organes intrathoraciques, de sièges autres et mal défini
+% Respiratory system and intrathoracic organs cancer, other and unspecified sites
 primary_cancer(c390).
 primary_cancer(c398).
 primary_cancer(c399).
 
-% Tumeur maligne des os et du cartilage articulaire des membres
+% Malignant tumors of the bones and articular cartilage of the limbs
 primary_cancer(c400).
 primary_cancer(c401).
 primary_cancer(c402).
@@ -231,7 +235,7 @@ primary_cancer(c403).
 primary_cancer(c408).
 primary_cancer(c409).
 
-% Tumeur maligne des os et du cartilage articulaire, de sièges autres et non précisés
+% Malignant tumors of the bones and articular cartilage, other and unspecified sites
 primary_cancer(c410).
 primary_cancer(c411).
 primary_cancer(c412).
@@ -240,7 +244,7 @@ primary_cancer(c414).
 primary_cancer(c418).
 primary_cancer(c419).
 
-% Mélanome malin de la peau
+% Skin melanoma
 primary_cancer(c430).
 primary_cancer(c431).
 primary_cancer(c432).
@@ -252,7 +256,7 @@ primary_cancer(c437).
 primary_cancer(c438).
 primary_cancer(c439).
 
-% Autres tumeurs malignes de la peau
+% Other malignant skin tumors
 primary_cancer(c440).
 primary_cancer(c441).
 primary_cancer(c442).
@@ -264,14 +268,14 @@ primary_cancer(c447).
 primary_cancer(c448).
 primary_cancer(c449).
 
-% Mésothéliome
+% Mesothelioma
 primary_cancer(c450).
 primary_cancer(c451).
 primary_cancer(c452).
 primary_cancer(c457).
 primary_cancer(c459).
 
-% Sarcome de Kaposi
+% Kaposi's sarcoma
 primary_cancer(c460).
 primary_cancer(c461).
 primary_cancer(c462).
@@ -284,7 +288,7 @@ primary_cancer(c4678).
 primary_cancer(c468).
 primary_cancer(c469).
 
-% Tumeur maligne des nerfs périphériques et du système nerveux autonome
+% Peripheral nerves and autonomic nervous system cancer
 primary_cancer(c470).
 primary_cancer(c471).
 primary_cancer(c472).
@@ -295,13 +299,13 @@ primary_cancer(c476).
 primary_cancer(c478).
 primary_cancer(c479).
 
-% Tumeur maligne du rétropéritoine et du péritoine
+% Malignant tumors of the retroperitoneum and peritoneum
 primary_cancer(c480).
 primary_cancer(c481).
 primary_cancer(c482).
 primary_cancer(c488).
 
-% Tumeur maligne du tissu conjonctif et des autres tissus mous
+% Malignant tumors of connective and other soft tissues
 primary_cancer(c490).
 primary_cancer(c491).
 primary_cancer(c492).
@@ -318,7 +322,7 @@ primary_cancer(c496).
 primary_cancer(c498).
 primary_cancer(c499).
 
-% Tumeur maligne du sein
+% Breast cancer
 primary_cancer(c500).
 primary_cancer(c501).
 primary_cancer(c502).
@@ -337,34 +341,34 @@ primary_cancer(c56).
 primary_cancer(c57).
 primary_cancer(c58).
 
-% Tumeurs malignes, organes génitaux masculins
+% Malignant tumors of the male genital organs
 primary_cancer(c60).
 primary_cancer(c61).
 primary_cancer(c62).
 primary_cancer(c63).
 
-% Tumeurs malignes, voies urinaires
+% Malignant tumors of the urinary tract
 primary_cancer(c64).
 primary_cancer(c65).
 primary_cancer(c66).
 primary_cancer(c67).
 primary_cancer(c68).
 
-% Tumeurs malignes, œil, cerveau et autres parties du système nerveux central
+% Eye, brain and other parts of the central nervous system malignant tumors
 primary_cancer(c69).
 primary_cancer(c70).
 primary_cancer(c71).
 primary_cancer(c72).
 
-% Tumeur maligne de la thyroïde
+% Thyroid malignant tumor
 primary_cancer(c73).
 
-% Tumeur maligne de la surrénale
+% Cancer of the adrenal gland
 primary_cancer(c740).
 primary_cancer(c741).
 primary_cancer(c749).
 
-% Tumeur maligne d'autres glandes endocrines et structures apparentées
+% Malignant tumors of other endocrine glands and related structures
 primary_cancer(c750).
 primary_cancer(c751).
 primary_cancer(c752).
@@ -374,7 +378,7 @@ primary_cancer(c755).
 primary_cancer(c758).
 primary_cancer(c759).
 
-% Maladie de Hodgkin
+% Hodgkin's disease
 primary_cancer(c810).
 primary_cancer(c811).
 primary_cancer(c812).
@@ -382,14 +386,14 @@ primary_cancer(c813).
 primary_cancer(c817).
 primary_cancer(c819).
 
-% Lymphome folliculaire [nodulaire] non hodgkinien
+% Hodgkin's lymphoma, follicular [nodular] type
 primary_cancer(c820).
 primary_cancer(c821).
 primary_cancer(c822).
 primary_cancer(c827).
 primary_cancer(c829).
 
-% Lymphome diffus non hodgkinien
+% Hodgkin's lymphoma, diffuse non-follicular type
 primary_cancer(c830).
 primary_cancer(c831).
 primary_cancer(c832).
@@ -401,7 +405,7 @@ primary_cancer(c837).
 primary_cancer(c838).
 primary_cancer(c839).
 
-% Lymphomes périphériques et cutanés à cellules T
+% Peripheral and cutaneous T-cell lymphomas
 primary_cancer(c840).
 primary_cancer(c841).
 primary_cancer(c842).
@@ -409,13 +413,13 @@ primary_cancer(c843).
 primary_cancer(c844).
 primary_cancer(c845).
 
-% Lymphome non hodgkinien, de types autres et non précisés
+% Non-Hodgkin lymphoma, other and unspecified types
 primary_cancer(c850).
 primary_cancer(c851).
 primary_cancer(c857).
 primary_cancer(c859).
 
-% Maladies immunoprolifératives malignes
+% Malignant immunoproliferative diseases
 primary_cancer(c880).
 primary_cancer(c881).
 primary_cancer(c882).
@@ -423,12 +427,12 @@ primary_cancer(c883).
 primary_cancer(c887).
 primary_cancer(c889).
 
-% Myélome multiple et tumeurs malignes à plasmocytes
+% Multiple myeloma and malignant plasma cell tumors
 primary_cancer(c900).
 primary_cancer(c901).
 primary_cancer(c902).
 
-% Leucémie lymphoïde
+% Lymphoid leukemia
 primary_cancer(c910).
 primary_cancer(c911).
 primary_cancer(c912).
@@ -438,7 +442,7 @@ primary_cancer(c915).
 primary_cancer(c917).
 primary_cancer(c919).
 
-% Leucémie myéloïde
+% Myeloid leukemia
 primary_cancer(c920).
 primary_cancer(c921).
 primary_cancer(c922).
@@ -448,14 +452,14 @@ primary_cancer(c925).
 primary_cancer(c927).
 primary_cancer(c929).
 
-% Leucémie monocytaire
+% Monocyte leukemia
 primary_cancer(c930).
 primary_cancer(c931).
 primary_cancer(c932).
 primary_cancer(c937).
 primary_cancer(c939).
 
-% Autres leucémies à cellules précisées
+% Other specified cell leukemias
 primary_cancer(c940).
 primary_cancer(c941).
 primary_cancer(c942).
@@ -464,14 +468,14 @@ primary_cancer(c944).
 primary_cancer(c945).
 primary_cancer(c947).
 
-% Leucémie à cellules non précisées
+% Non-specified cell leukemia
 primary_cancer(c950).
 primary_cancer(c951).
 primary_cancer(c952).
 primary_cancer(c957).
 primary_cancer(c959).
 
-% Tumeurs malignes des tissus lymphoïde, hématopoïétique et apparentés, autres et non précisées
+% Malignant neoplasms of lymphoid, hematopoietic and related tissue, other and unspecified
 primary_cancer(c960).
 primary_cancer(c961).
 primary_cancer(c962).
@@ -479,16 +483,15 @@ primary_cancer(c963).
 primary_cancer(c967).
 primary_cancer(c969).
 
-% Tumeurs malignes de sièges multiples indépendants (primitifs)
+% Malignant neoplasms of multiple independent sites (primary)
 primary_cancer(c97).
 
-% Carcinome in situ de la cavité buccale, de l’œsophage et de l'estomac
+% Carcinoma in situ of the oral cavity, esophagus and stomach
 primary_cancer(d000).
 primary_cancer(d001).
 primary_cancer(d002).
 
-
-% Carcinome in situ des organes digestifs, autres et non précisés
+% Carcinoma in situ of other and unspecified digestive organs
 primary_cancer(d010).
 primary_cancer(d011).
 primary_cancer(d012).
@@ -498,14 +501,14 @@ primary_cancer(d015).
 primary_cancer(d017).
 primary_cancer(d019).
 
-% Carcinome in situ de l'oreille moyenne et de l'appareil respiratoire
+% Carcinoma in situ of the middle ear and respiratory system
 primary_cancer(d020).
 primary_cancer(d021).
 primary_cancer(d022).
 primary_cancer(d023).
 primary_cancer(d024).
 
-% Mélanome in situ
+% Melanoma in situ of the skin
 primary_cancer(d030).
 primary_cancer(d031).
 primary_cancer(d032).
@@ -517,7 +520,7 @@ primary_cancer(d037).
 primary_cancer(d038).
 primary_cancer(d039).
 
-% Carcinome in situ de la peau
+% Carcinoma in situ of the skin
 primary_cancer(d040).
 primary_cancer(d041).
 primary_cancer(d042).
@@ -529,19 +532,19 @@ primary_cancer(d047).
 primary_cancer(d048).
 primary_cancer(d049).
 
-% Carcinome in situ du sein
+% Carcinoma in situ of the breast
 primary_cancer(d050).
 primary_cancer(d051).
 primary_cancer(d057).
 primary_cancer(d059).
 
-% Carcinome in situ du col de l'utérus
+% Carcinoma in situ of the cervix uteri
 primary_cancer(d060).
 primary_cancer(d061).
 primary_cancer(d067).
 primary_cancer(d069).
 
-% Carcinome in situ d'organes génitaux, autres et non précisés
+% Carcinoma in situ of other and unspecified genital organs
 primary_cancer(d070).
 primary_cancer(d071).
 primary_cancer(d072).
@@ -550,7 +553,7 @@ primary_cancer(d074).
 primary_cancer(d075).
 primary_cancer(d076).
 
-% Carcinome in situ de sièges autres et non précisés
+% Carcinoma in situ of other and unspecified sites
 primary_cancer(d090).
 primary_cancer(d091).
 primary_cancer(d092).
@@ -558,7 +561,7 @@ primary_cancer(d093).
 primary_cancer(d097).
 primary_cancer(d099).
 
-% primary lung cancer icd10
+% primary lung cancer ICD-10
 primary_lungC(c340).
 primary_lungC(c341).
 primary_lungC(c342).
@@ -566,7 +569,7 @@ primary_lungC(c343).
 primary_lungC(c348).
 primary_lungC(c349).
 
-% secondary cancer icd10
+% secondary cancer ICD-10
 secondary_cancer(c711).
 secondary_cancer(c712).
 secondary_cancer(c716).

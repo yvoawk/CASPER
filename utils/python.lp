@@ -47,12 +47,54 @@ def get_id(*args):
     _used_ids.add(new_id)
     return Number(new_id)
 
-def ongoing_time():
-    """Returns the current time."""
-    return Number(int(time.time() + 43200))
+def get_shift(unit='seconds'):
+    """
+    Returns the value of a 12-hour shift, converted to the specified unit.
+    """
 
-def convert_time_to_date(time):
-    return time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time))
+    unit = str(unit).strip().lower()
+
+    seconds_in_unit = {
+        'seconds': 1,
+        'minutes': 60,
+        'hours': 3600,
+        'days': 86400
+    }
+
+    if unit not in seconds_in_unit:
+        raise ValueError(f"Invalid unit '{unit}'. Choose from: seconds, minutes, hours, days.")
+
+    # 12 hours in seconds, then convert to the desired unit
+    twelve_hours_in_seconds = 12 * 3600
+    shift_in_unit = twelve_hours_in_seconds / seconds_in_unit[unit]
+
+    return Number(int(shift_in_unit))
+
+def ongoing_time(unit='seconds'):
+    """
+    Returns the current time shifted by 12 hours, converted to the specified unit,
+    and wrapped in a Number object.
+
+    Parameters:
+    - unit (str): 'seconds', 'minutes', 'hours', or 'days'
+
+    Returns:
+    - Number: current time + 12h, expressed in the given unit (rounded down)
+    """
+    unit = str(unit).strip().lower()
+
+    seconds_in_unit = {
+        'seconds': 1,
+        'minutes': 60,
+        'hours': 3600,
+        'days': 86400
+    }
+
+    now_seconds = time.time()
+    now_in_unit = now_seconds / seconds_in_unit[unit]
+    shift = get_shift(unit).number
+
+    return Number(int(now_in_unit + shift))
 
 #end.
 

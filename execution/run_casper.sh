@@ -16,6 +16,7 @@ TIMELINE="naive"
 WINDOW=""
 WIN_START=""
 WIN_END=""
+UNIT="seconds"
 PYTHON_SCRIPT="./utils/process_answers.py"
 FILTER_SCRIPT="./utils/filter_fact.py"
 
@@ -32,6 +33,10 @@ show_help() {
   echo "                           Note: 'preferred' & 'cautious' can only be used with --repair=yes"
   echo "  --thread-N=N             Number of parallel threads (default: 1)"
   echo "  --window=start-end       Time window for event recognition (format: start-end, both numeric)"
+  echo "                           Example: --window=1609459200-1609545600"
+  echo "                           Note: start must be less than end"
+  echo "  --unit=seconds           Units of the time used (default: seconds)"
+  echo "                           Other options: minutes, hours, days"
   echo "  --verbose                Print configuration before execution"
   echo "  --help                   Show helper message"
   echo "  --version                Show CASPER version information"
@@ -59,6 +64,9 @@ while [[ $# -gt 0 ]]; do
     ;;
   --timeline=*)
     TIMELINE="${1#*=}"
+    ;;
+  --unit=*)
+    UNIT="${1#*=}"
     ;;
   --help)
     show_help
@@ -138,6 +146,15 @@ preferred)
   ;;
 esac
 
+[[ "$UNIT" =~ ^(seconds|minutes|hours|days)$ ]] || {
+  echo "❌ Invalid --units value: $UNIT (must be seconds, minutes, hours, or days)"
+  exit 1
+}
+
+if [[ "$REPAIR" == "yes" && "$TIMELINE" != "preferred" && "$TIMELINE" != "cautious" ]]; then
+  TIMELINE="consistent"
+  fi
+
 APP_DIR="./app/${APP}"
 [[ -d "$APP_DIR/facts" ]] || {
   echo "❌ App not found: $APP"
@@ -174,6 +191,7 @@ echo "📦 Running CASPER v$VERSION"
   echo "Repair mode:    $REPAIR"
   echo "Threads:        $THREADS"
   echo "Timeline:       $TIMELINE"
+  echo "Unit:           $UNIT"
   [[ -n "$WINDOW" ]] && echo "Time window:    $WINDOW"
   echo "Simple event:   found"
   [[ -f "$META_EVENT" ]] && echo "Meta-event:     found" || echo "Meta-event:  not found"
@@ -181,7 +199,7 @@ echo "📦 Running CASPER v$VERSION"
   echo "============================================================="
 }
 
-BASE_OPTS="--mode=clingo --opt-mode=optN --models 0 --parallel-mode=$THREADS --outf=2 --stats=2 --enum-mode=$MODE"
+BASE_OPTS="--mode=clingo --opt-mode=optN --models 0 --parallel-mode=$THREADS --outf=2 --stats=2 --enum-mode=$MODE -c unit=$UNIT"
 
 if [[ "$WINDOW" ]]; then
   echo "🔍 Applying time window: $WINDOW"
@@ -195,7 +213,7 @@ if [[ "$WINDOW" ]]; then
 fi
 
 if [[ "$REPAIR" == "no" ]]; then
-  # Normal mode - simple and possibly complex events
+  # Normal mode - simple and possibly meta-events
   if [[ -f "$META_EVENT" ]]; then
     echo "⚙️  Processing both simple and meta- events..."
     clingo $BASE_OPTS $BASE_FILES "$SIMPLE_EVENT" "$META_EVENT" ./execution/parameters1.lp >"$OUTPUT"
@@ -221,7 +239,7 @@ else
 
   if [[ -f "$META_EVENT" ]]; then
     echo "🔍 Stage 2: Computing meta-events from repaired simple events..."
-    python "$PYTHON_SCRIPT" "$BASE_FILES_2" "$META_EVENT" "$TEMP_JSON" --threads "$THREADS" >"$OUTPUT"
+    python "$PYTHON_SCRIPT" "$BASE_FILES_2" "$META_EVENT" "$TEMP_JSON" --unit "$UNIT" --threads "$THREADS" >"$OUTPUT"
     rm -f "$TEMP_JSON"
   else
     echo "ℹ️  No complex_event.lp found, skipping Stage 2"

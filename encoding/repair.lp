@@ -2,6 +2,7 @@
 % CASPER version v1.0.0
 % Author: XXXX XXXXXX
 % Description: temporal repair encoding
+% See Section 2.2 & Section 2.3 (Definitions 6, 7, 8) in the paper for details
 % ==============================================================================
 
 { rep_event(ID, N, P, E, (Start, End), L) } :- event(ID, N, P, E, (Start, End), L).
