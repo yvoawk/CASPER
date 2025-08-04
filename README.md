@@ -219,7 +219,7 @@ In addition to event inference, CASPER provides built-in support for:
   
   CASPER also supports temporal windowing, allowing the system to restrict reasoning to a specific time interval.
 
-- Two additional Modes
+- Two Modes
   
   - `preferred`: keep only the highest-confidence, longest-valid segments
   
