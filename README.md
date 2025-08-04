@@ -83,6 +83,10 @@ Options:
                            Note: 'preferred' & 'cautious' can only be used with --repair=yes
   --thread-N=N             Number of parallel threads (default: 1)
   --window=start-end       Time window for event recognition (format: start-end, both numeric)
+                            Example: --window=1609459200-1609545600
+                            Note: start must be less than end
+  --unit=seconds           Units of the time used (default: seconds)
+                           Other options: minutes, hours, days
   --verbose                Print configuration before execution
   --help                   Show helper message
   --version                Show CASPER version information
@@ -226,8 +230,8 @@ In addition to event inference, CASPER provides built-in support for:
 
 📜 License
 
-MIT License - See [LICENSE](https://github.com/yvoawk/CASPER/blob/master/LICENSE).
+MIT License - See [LICENSE](https://github.com/xxxx/CASPER/blob/master/LICENSE).
 ---
 📬 Contact
 
-For questions or contributions, please [open an issue](https://github.com/yvoawk/CASPER/issues) or contact the [maintainers](mailto:.....).
+For questions or contributions, please [open an issue](https://github.com/xxxx/CASPER/issues) or contact the [maintainers](mailto:.....).

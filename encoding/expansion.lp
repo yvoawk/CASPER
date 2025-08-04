@@ -2,6 +2,7 @@
 % CASPER version v1.0.0
 % Author: XXXX XXXXXX
 % Description: Expansion technique for clinical event detection encoding
+% See Theorem 1 in the paper for details
 % ==============================================================================
 
 no_need_more_expansion(N) :- exists_level_count(N, C); C <= 2.
@@ -15,13 +16,13 @@ period(E, D) :- not pt_window(_, E, _); default_period(E, D); terminates(_, _, E
 pre_end_obs(N, P, E, (T, Tnext), L) :- exists(N, P, E, T, L1); terminates(N, P, E_, Tnext, L); period(N, E, D); Tnext <= (T + D); Tnext > T;
     not exists(N, P, _, Tx, _) : valid_time(Tx), T < Tx, Tx <= Tnext.
 
-pre_end_obs(N, P, E, (T, Tnext), L) :- exists(N, P, E, T, L1); terminates(P, Tnext, L); period(N, E, D); Tnext <= (T + D + 43200); Tnext > T;
+pre_end_obs(N, P, E, (T, Tnext), L) :- exists(N, P, E, T, L1); terminates(P, Tnext, L); period(N, E, D); Tnext <= (T + D + @get_shift(unit)); Tnext > T;
     not exists(N, P, _, Tx, _) : valid_time(Tx), T < Tx, Tx <= Tnext.
 
 pre_end_obs(N, P, E, (T, Tnext), L) :- exists(N, P, E, T, L1); terminates(N, P, E_, Tnext, L); period(E, D); Tnext <= (T + D); Tnext > T;
     not exists(N, P, _, Tx, _) : valid_time(Tx), T < Tx, Tx <= Tnext.
 
-pre_end_obs(N, P, E, (T, Tnext), L) :- exists(N, P, E, T, L1); terminates(P, Tnext, L); period(E, D); Tnext <= (T + D + 43200); Tnext > T;
+pre_end_obs(N, P, E, (T, Tnext), L) :- exists(N, P, E, T, L1); terminates(P, Tnext, L); period(E, D); Tnext <= (T + D + @get_shift(unit)); Tnext > T;
     not exists(N, P, _, Tx, _) : valid_time(Tx), T < Tx, Tx <= Tnext.
 
 end_obs(N, P, E, (T, Tnext), L) :- pre_end_obs(N, P, E, (T, Tnext), L); not end_covered(N, P, E, (T, Tnext), L).
@@ -63,7 +64,7 @@ covered(N, P, E, (T1, T2), L) :-
     T1_ <= T1;
     Lx < L.
 
-% initialization of event
+% initialization of non-persistent simple event
 pre_candidate(N, P, E, (Tx, Tx), L) :- exists(N, P, E, Tx, L).
 
 % forward expansion of event

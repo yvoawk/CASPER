@@ -2,6 +2,7 @@
 % CASPER version v1.0.0
 % Author: XXXX XXXXXX
 % Description: Linear technique for clinical event detection encoding
+% See Theorem 1 in the paper for details
 % ==============================================================================
 
 % find the termination time of the event
@@ -11,7 +12,7 @@ pre_end_obs(N, P, E, (T, Tnext), L) :- exists_pers(N, P, E, T, L1); terminates(N
 pre_end_obs(N, P, E, (T, Tnext), L) :- exists_pers(N, P, E, T, L1); terminates(P, Tnext, L); Tnext > T;
     not exists_pers(N, P, _, Tx, _) : valid_time(Tx), T < Tx, Tx < Tnext.
 
-% initialization of event
+% initialization of persistent simple event
 l_candidate(N, P, E, (Tx, Tx), L) :- exists_pers(N, P, E, Tx, L).
 
 e_candidate(N, P, E, (T1, T2), L) :- l_candidate(N, P, E, (T1, T2_), L1); end_obs(N, P, E, (T1_, T2), L2);

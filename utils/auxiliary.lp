@@ -10,11 +10,11 @@
 
 % window
 w_start(T) :- T = #min{ Tx : obs(_, _, _, Tx) }; T >= 0.
-w_end(T + 43200) :- T = #max{ Tx : obs(_, _, _, Tx) }.
+w_end(T + @get_shift(unit)) :- T = #max{ Tx : obs(_, _, _, Tx) }.
 
-check_end :- w_end(E); T = @ongoing_time(); E + 43200 < T.
+check_end :- w_end(E); T = @ongoing_time(unit); E + @get_shift(unit) < T.
 relative_time(T) :- check_end; w_end(T).
-relative_time(T) :- not check_end; T = @ongoing_time().
+relative_time(T) :- not check_end; T = @ongoing_time(unit).
 
 window(S, E) :- w_start(S); w_end(E).
 
@@ -43,9 +43,3 @@ event(@get_id(N, P, E, T1, T2), N, P, E, (T1, T2), L) :- m_event(N, P, E, (T1, T
 % event interval
 e_interval(T1, T2) :- event(_, _, _, _, (T1, T2), _).
 e_interval(T1, T2) :- event(_, _, _, (T1, T2), _).
-
-% helper predicates
-start(N, P, T, L) :- event(_, N, P, _, (T, _), L); window(S, _); not event(_, N, P, _, (Tx, _), _) : valid_time(Tx), S <= Tx, Tx < T.
-end(N, P, T, L) :- event(_, N, P, _, (_, T), L); window(_, E); not event(_, N, P, _, (_, Tx), _) : valid_time(Tx), T < Tx, Tx <= E.
-
-persist_end(P, T) :- terminates(P, T, _).

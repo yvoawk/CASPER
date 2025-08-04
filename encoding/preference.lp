@@ -2,6 +2,7 @@
 % CASPER version v1.0.0
 % Author: XXXX XXXXXX
 % Description: Preference encoding for clinical event detection
+% See Theorem 3 in the paper for details
 % ==============================================================================
 
 % Maximize the total weight (prioritizes higher confidence levels)
