@@ -61,7 +61,6 @@ def get_shift(unit='seconds'):
         'days': 86400
     }
 
-    print(f"DEBUG: unit received: '{unit}'") 
     if unit not in seconds_in_unit:
         raise ValueError(f"Invalid unit '{unit}'. Choose from: seconds, minutes, hours, days.")
 
