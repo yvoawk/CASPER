@@ -32,7 +32,7 @@ valid_time(T) :- exists_pers(_, _, _, T, _).
 valid_time(T) :- terminates(_, _, _, T, _).
 valid_time(T) :- terminates(_, T, _).
 
-% complex event definition
+% meta-event definition
 event(@get_id(N, P, T1, T2), N, P, (T1, T2), L) :- m_event(N, P, (T1, T2), L).
 event(@get_id(N, P, E, T1, T2), N, P, E, (T1, T2), L) :- m_event(N, P, E, (T1, T2), L).
 
