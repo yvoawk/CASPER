@@ -154,10 +154,12 @@ To add a new application, create a folder named after your application (no space
 - `event([ID], [event_name], [Patient], [Entity], ([Start], [End]), [Confidence])`:
   
   Events capture clinically meaningful patterns identified from observations.
+  
+  > ⚠️ **Note**: For instance, the system does not yet support dynamic arguments during event definition, requiring events to be defined in this fixed format.  
 
 ### Meta-Event
 
-- `m_event([meta_event_name], [Patient], [Entity], ([Start], [End]), [Confidence])`:
+- `m_event([meta_event_name], [Patient], [Entity], ([Start], [End]), [Confidence])` or `m_event([meta_event_name], [Patient], ([Start], [End]), [Confidence])`:
   
   Meta-events represent higher-level or composite clinical events derived from at least one event (simple or meta- event), based on temporal relationships or logical conjunctions.
 
@@ -193,7 +195,7 @@ Support for key point-based relations: `p_before/2, p_after/2, p_during/2, p_sta
   Returns the **latest** time point of a given event.
 
 - `persist_end([Patient], [Time])`:  
-  Indicates that the end time of a persistent event is ongoing.
+  Indicates that the end time of an event is ongoing.
 
 ## 🛠️ Support Features
 
@@ -213,14 +215,11 @@ In addition to event inference, CASPER provides built-in support for:
   >
   > ❌ Domain repair (e.g., resolving logical inconsistencies in background knowledge) is currently not supported.
 
-- Parallel Execution
+- Windowing
   
-  Speed up computation by leveraging multiple threads via the `--thread-N` option. Useful for large-scale datasets or multiple patient timelines.
+  CASPER also supports temporal windowing, allowing the system to restrict reasoning to a specific time interval.
 
-- Preference Modes
-  When multiple temporal segments are possible for a given event, CASPER allows selection of the most clinically plausible one using:
-
-  - `naïve`: keep all
+- Two additional Modes
   
   - `preferred`: keep only the highest-confidence, longest-valid segments
   
