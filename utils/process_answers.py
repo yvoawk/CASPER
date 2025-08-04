@@ -3,7 +3,7 @@
 # ===============================================================================================
 # CASPER version v1.0.0
 # Author: XXXX XXXXXX
-# Description: Python script to compute complex events from simple events using Clingo CLI.
+# Description: Python script to compute meta-events from simple events using Clingo CLI.
 # ================================================================================================
 
 import argparse
@@ -14,8 +14,8 @@ from concurrent.futures import ThreadPoolExecutor
 import tempfile
 import os
 
-def compute_meta_events(base_files, meta_event, simple_events):
-    """Compute complex events using Clingo CLI."""
+def compute_meta_events(base_files, meta_event, simple_events, unit):
+    """Compute meta-events using Clingo CLI."""
     with tempfile.NamedTemporaryFile(mode="w+", suffix=".lp", delete=False) as temp_facts:
         facts_content = "\n".join(f"{event}." for event in simple_events)
         temp_facts.write(facts_content)
@@ -24,6 +24,7 @@ def compute_meta_events(base_files, meta_event, simple_events):
     cmd = [
         "clingo",
         "--outf=2",
+        "-c unit=" + unit,
         *base_files,
         meta_event,
         temp_facts_path
@@ -53,11 +54,12 @@ def compute_meta_events(base_files, meta_event, simple_events):
         return [], 0.0, 0.0
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="Compute complex events from simple events using Clingo CLI.")
+    parser = argparse.ArgumentParser(description="Compute meta-events from simple events using Clingo CLI.")
     parser.add_argument("base_files", help="Space-separated list of base .lp files")
     parser.add_argument("meta_event", help="Path to meta_event.lp")
     parser.add_argument("repair_json", help="Input JSON file with repaired simple events")
     parser.add_argument("--threads", type=int, default=1, help="Number of parallel threads")
+    parser.add_argument("--unit", default="seconds", help="Time unit (default: seconds)")
     return parser.parse_args()
 
 def main():
@@ -65,6 +67,7 @@ def main():
     base_files = args.base_files.split()
     meta_event = args.meta_event
     repair_file = args.repair_json
+    unit = args.unit if hasattr(args, 'unit') else "seconds"
     thread_count = args.threads
 
     with open(repair_file) as f:
@@ -79,7 +82,7 @@ def main():
     def process_witness(witness):
         nonlocal cumulative_time, cumulative_cpu
         simple_events = witness["Value"]
-        complex_result, t_total, t_cpu = compute_meta_events(base_files, meta_event, simple_events)
+        complex_result, t_total, t_cpu = compute_meta_events(base_files, meta_event, simple_events, unit)
 
         witness["Value"] = [str(e) for e in complex_result] if complex_result else []
         witness["Time"] += round(t_total, 3)

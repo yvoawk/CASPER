@@ -1,7 +1,7 @@
 % ==============================================================================
 % CASPER version v1.0.0
 % Author: XXXX XXXXXX
-% Description: Auxiliary predicates (helper predicates) encoding
+% Description: Auxiliary predicates encoding
 % ==============================================================================
 
 #include "python.lp".
@@ -11,10 +11,6 @@
 % window
 w_start(T) :- T = #min{ Tx : obs(_, _, _, Tx) }; T >= 0.
 w_end(T + @get_shift(unit)) :- T = #max{ Tx : obs(_, _, _, Tx) }.
-
-check_end :- w_end(E); T = @ongoing_time(unit); E + @get_shift(unit) < T.
-relative_time(T) :- check_end; w_end(T).
-relative_time(T) :- not check_end; T = @ongoing_time(unit).
 
 window(S, E) :- w_start(S); w_end(E).
 
@@ -28,7 +24,7 @@ terminates_level_count(N, C) :- terminates(N, _, _, _, _); C = #count{ P, L : te
 
 % default termination condition
 terminates(P, T, L) :- obs(death, P, T); L = #min{ Lx : highest_terminates(Lx); Ly: if_highest_exists(Ly) }.  % patient death
-terminates(P, T, L) :- exists(N, P, _, _, _); not obs(death, P, _); relative_time(T); L = #min{ Lx : highest_terminates(Lx); Ly: if_highest_exists(Ly) }. % ongoing event
+terminates(P, T, L) :- exists(N, P, _, _, _); not obs(death, P, _); T = @ongoing_time(unit); L = #min{ Lx : highest_terminates(Lx); Ly: if_highest_exists(Ly) }. % ongoing event
 
 % valid time
 valid_time(T) :- exists(_, _, _, T, _).

@@ -151,6 +151,10 @@ esac
   exit 1
 }
 
+if [[ "$REPAIR" == "yes" && "$TIMELINE" != "preferred" && "$TIMELINE" != "cautious" ]]; then
+  TIMELINE="consistent"
+  fi
+
 APP_DIR="./app/${APP}"
 [[ -d "$APP_DIR/facts" ]] || {
   echo "❌ App not found: $APP"
@@ -209,7 +213,7 @@ if [[ "$WINDOW" ]]; then
 fi
 
 if [[ "$REPAIR" == "no" ]]; then
-  # Normal mode - simple and possibly complex events
+  # Normal mode - simple and possibly meta-events
   if [[ -f "$META_EVENT" ]]; then
     echo "⚙️  Processing both simple and meta- events..."
     clingo $BASE_OPTS $BASE_FILES "$SIMPLE_EVENT" "$META_EVENT" ./execution/parameters1.lp >"$OUTPUT"
@@ -235,7 +239,7 @@ else
 
   if [[ -f "$META_EVENT" ]]; then
     echo "🔍 Stage 2: Computing meta-events from repaired simple events..."
-    python "$PYTHON_SCRIPT" "$BASE_FILES_2" "$META_EVENT" "$TEMP_JSON" --threads "$THREADS" >"$OUTPUT"
+    python "$PYTHON_SCRIPT" "$BASE_FILES_2" "$META_EVENT" "$TEMP_JSON" --unit "$UNIT" --threads "$THREADS" >"$OUTPUT"
     rm -f "$TEMP_JSON"
   else
     echo "ℹ️  No complex_event.lp found, skipping Stage 2"
