@@ -27,7 +27,7 @@ pre_end_obs(N, P, E, (T, Tnext), L) :- exists(N, P, E, T, L1); terminates(P, Tne
 
 end_obs(N, P, E, (T, Tnext), L) :- pre_end_obs(N, P, E, (T, Tnext), L); not end_covered(N, P, E, (T, Tnext), L).
 
-% check if the event is covered by another event
+
 end_covered(N, P, E, (T1, T2), L) :-
     pre_end_obs(N, P, E, (T1, T2), L);
     pre_end_obs(N, P, E, (T1_, T2_), Lx);
@@ -36,6 +36,7 @@ end_covered(N, P, E, (T1, T2), L) :-
     T2_ - T1_ < T2 - T1;
     Lx <= L.
 
+% check if the event is covered by another event
 pre_covered(N, P, E, (T1, T2), L) :-
     pre_candidate(N, P, E, (T1, T2), L);
     pre_candidate(N, P, E, (T1_, T2_), L);
@@ -101,7 +102,7 @@ e_candidate(N, P, E, (T1_, T2), L) :- e_candidate(N, P, E, (T1, T2), Lx); e_cand
     not terminates(N, P, _, Tx, _) : valid_time(Tx), T2_ <= Tx, Tx <= T1.
 
 % expansion with termination condition
-e_candidate(N, P, E, (T1, Tf), L) :- e_candidate(N, P, E, (T1, T2), L1); end_obs(N, P, E, (T2, Tf), L2);
+e_candidate(N, P, E, (T1, Tf), L) :- e_candidate(N, P, E, (T1, T2), L1); end_obs(N, P, E, (T2, Tf), L2); Tf != @ongoing_time(unit);
     L = #max{ Lx : e_candidate(N, P, E, (T1, T2), Lx); Ly : end_obs(N, P, E, (T2, Tf), Ly) }.
 
 % meet e_candidate

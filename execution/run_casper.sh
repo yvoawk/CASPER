@@ -75,7 +75,7 @@ while [[ $# -gt 0 ]]; do
   --version)
     echo "CASPER version $VERSION"
     echo
-    echo "Copyright (c) 2025 Yvon K. Awuklu"
+    echo "Copyright (c) 2025 XXXX X. XXXXXX"
     echo
     echo "Licensed under the MIT License <https://opensource.org/licenses/MIT>."
     exit 0
@@ -122,30 +122,6 @@ if [[ -n "$WINDOW" ]]; then
   fi
 fi
 
-case "$TIMELINE" in
-naive)
-  MODE="auto"
-  ;;
-cautious)
-  if [[ "$REPAIR" != "yes" ]]; then
-    echo "❌ --timeline=cautious can only be used when --repair=yes"
-    exit 1
-  fi
-  MODE="cautious"
-  ;;
-preferred)
-  if [[ "$REPAIR" != "yes" ]]; then
-    echo "❌ --timeline=preferred can only be used when --repair=yes"
-    exit 1
-  fi
-  MODE="auto"
-  ;;
-*)
-  echo "❌ Invalid --timeline value: $TIMELINE (must be naive, preferred or cautious)"
-  exit 1
-  ;;
-esac
-
 [[ "$UNIT" =~ ^(seconds|minutes|hours|days)$ ]] || {
   echo "❌ Invalid --units value: $UNIT (must be seconds, minutes, hours, or days)"
   exit 1
@@ -161,6 +137,48 @@ APP_DIR="./app/${APP}"
   exit 1
 }
 
+# Output setup
+RESULTS_DIR="./results/${APP}"
+mkdir -p "$RESULTS_DIR"
+DATE=$(date +"%Y-%m-%d_%H-%M-%S")
+#OUTPUT="$RESULTS_DIR/results_${DATE}.json"
+TEMP_JSON="./temp_stage1_${DATE}.json"
+
+case "$TIMELINE" in
+naive)
+  MODE="auto"
+  mkdir -p "$RESULTS_DIR/naive"
+  OUTPUT="$RESULTS_DIR/naive/results_${DATE}.json"
+  ;;
+cautious)
+  if [[ "$REPAIR" != "yes" ]]; then
+    echo "❌ --timeline=cautious can only be used when --repair=yes"
+    exit 1
+  fi
+  MODE="cautious"
+  mkdir -p "$RESULTS_DIR/cautious"
+  OUTPUT="$RESULTS_DIR/cautious/results_${DATE}.json"
+  ;;
+preferred)
+  if [[ "$REPAIR" != "yes" ]]; then
+    echo "❌ --timeline=preferred can only be used when --repair=yes"
+    exit 1
+  fi
+  MODE="auto"
+  mkdir -p "$RESULTS_DIR/preferred"
+  OUTPUT="$RESULTS_DIR/preferred/results_${DATE}.json"
+  ;;
+consistent)
+  MODE="auto"
+  mkdir -p "$RESULTS_DIR/consistent" 
+  OUTPUT="$RESULTS_DIR/consistent/results_${DATE}.json"
+  ;;
+*)
+  echo "❌ Invalid --timeline value: $TIMELINE (must be naive, preferred or cautious)"
+  exit 1
+  ;;
+esac
+
 SIMPLE_EVENT="$APP_DIR/user_parameters/simple_event.lp"
 META_EVENT="$APP_DIR/user_parameters/meta_event.lp"
 
@@ -171,13 +189,6 @@ FILTER_FACTS="$APP_DIR/facts/filter_facts.lp"
   echo "❌ Missing $SIMPLE_EVENT"
   exit 1
 }
-
-# Output setup
-RESULTS_DIR="./results/${APP}"
-mkdir -p "$RESULTS_DIR"
-DATE=$(date +"%Y-%m-%d_%H-%M-%S")
-OUTPUT="$RESULTS_DIR/results_${DATE}.json"
-TEMP_JSON="./temp_stage1_${DATE}.json"
 
 BASE_FILES="$APP_DIR/facts/facts.lp ./encoding/expansion.lp ./encoding/linear.lp $APP_DIR/domain/atemporal_facts.lp ./utils/auxiliary.lp"
 BASE_FILES_2="$APP_DIR/facts/facts.lp $APP_DIR/user_parameters/simple_event.lp $APP_DIR/domain/atemporal_facts.lp ./utils/auxiliary.lp ./execution/parameters1.lp"
