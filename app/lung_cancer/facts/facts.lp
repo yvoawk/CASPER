@@ -27,9 +27,5 @@ obs(has_adm, 1000582, erlotinib, 1106265600). % 21/01/2005
 obs(has_adm, 1000582, erlotinib, 1105747200). % 14/01/2005
 obs(has_adm, 1000582, osimertinib, 1106352000). % 22/01/2005
 
-
-%obs(has_icd10_diag, 1000582, c340, 1760048500). 
-%obs(has_icd10_diag, 1000582, c340, 1760038646). 
-
 % Death time
 obs(death, 1000582, 1107734400). % 05/02/2005

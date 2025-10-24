@@ -2,7 +2,7 @@
 
 # ===============================================================================================
 # CASPER version v1.0.0
-# Author: XXXX XXXXXX
+# Author: Yvon K. Awuklu
 # Description: Python script to compute meta-events from simple events using Clingo CLI.
 # ================================================================================================
 
