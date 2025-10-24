@@ -3,9 +3,9 @@
 </p>
 
 # CASPER (Clinical ASP-based Event Recognition)
-[![CASPER badge](https://img.shields.io/badge/CASPER-ready%20to%20use-brightgreen)](https://github.com/xxxx/CASPER)
-[![ASP badge](https://img.shields.io/badge/Build%20with-♥%20and%20ASP-red)](https://github.com/xxxx/CASPER)
-[![licence](https://img.shields.io/badge/Licence-MIT%20%2B%20file%20LICENSE-blue)](https://github.com/xxxx/CASPER/blob/master/LICENSE)
+[![CASPER badge](https://img.shields.io/badge/CASPER-ready%20to%20use-brightgreen)](https://github.com/yvoawk/CASPER)
+[![ASP badge](https://img.shields.io/badge/Build%20with-♥%20and%20ASP-red)](https://github.com/yvoawk/CASPER)
+[![licence](https://img.shields.io/badge/Licence-MIT%20%2B%20file%20LICENSE-blue)](https://github.com/yvoawk/CASPER/blob/master/LICENSE)
 
 CASPER leverages the expressive power of ASP to model medical knowledge and infer clinical events from sequences of raw observations.
 CASPER encodes rules that capture both expert knowledge and temporal patterns, enabling the identification of clinically meaningful events—including their initiation and termination—even in the presence of imperfect data.
@@ -229,8 +229,8 @@ In addition to event inference, CASPER provides built-in support for:
 
 📜 License
 
-MIT License - See [LICENSE](https://github.com/xxxx/CASPER/blob/master/LICENSE).
+MIT License - See [LICENSE](https://github.com/yvoawk/CASPER/blob/master/LICENSE).
 ---
 📬 Contact
 
-For questions or contributions, please [open an issue](https://github.com/xxxx/CASPER/issues) or contact the [maintainers](mailto:.....).
+For questions or contributions, please [open an issue](https://github.com/yvoawk/CASPER/issues) or contact the [maintainers](mailto:yvon.awuklu@gmail.com).

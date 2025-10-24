@@ -1,6 +1,6 @@
 # ===============================================================================================
 # CASPER version v1.0.0
-# Author: XXXX XXXXXX
+# Author: Yvon K. Awuklu
 # Description: Python script to filter facts from a given file based on the value of T.
 # ================================================================================================
 
