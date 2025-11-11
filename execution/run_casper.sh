@@ -4,6 +4,7 @@
 # CASPER Workflow Runner Script (v1.0.0)
 # Author: Yvon K. Awuklu
 # Description: Executes Clinical ASP-based Event Recognition System
+# Note: For incremental execution see execution/multishot_driver.py
 # ==============================================================================
 
 trap 'echo "⚠️  Interrupted, cleaning up..."; exit 1' INT TERM

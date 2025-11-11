@@ -4,6 +4,8 @@
 % Description: temporal predicates encoding
 % ==============================================================================
 
+#program base.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% intersection of two intervals %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -11,8 +13,8 @@
 intersection_of((Start1, End1), (Start2, End2), (NewStart, NewEnd)) :-
     Start1 < End1;
     Start2 < End2;
-    NewStart = #max{V : valid_time(V), V = Start1; V : valid_time(V), V = Start2},  % Start of the intersection
-    NewEnd = #min{V : valid_time(V), V = End1; V : valid_time(V), V = End2}; % End of the intersection
+    NewStart = #max{V : time_domain(V), V = Start1; V : time_domain(V), V = Start2},  % Start of the intersection (equivalent optimization: bounded by scoped times)
+    NewEnd = #min{V : time_domain(V), V = End1; V : time_domain(V), V = End2}; % End of the intersection
     NewStart <= NewEnd;
     e_interval(Start1, End1); e_interval(Start2, End2);
     End1 = Start2.
@@ -20,8 +22,8 @@ intersection_of((Start1, End1), (Start2, End2), (NewStart, NewEnd)) :-
 intersection_of((Start1, End1), (Start2, End2), (NewStart, NewEnd)) :-
     Start1 < End1;
     Start2 < End2;
-    NewStart = #max{V : valid_time(V), V = Start1; V : valid_time(V), V = Start2},  % Start of the intersection
-    NewEnd = #min{V : valid_time(V), V = End1; V : valid_time(V), V = End2}; % End of the intersection
+    NewStart = #max{V : time_domain(V), V = Start1; V : time_domain(V), V = Start2},
+    NewEnd = #min{V : time_domain(V), V = End1; V : time_domain(V), V = End2};
     NewStart <= NewEnd;
     e_interval(Start1, End1); e_interval(Start2, End2);
     % Intervals overlap
@@ -32,8 +34,8 @@ intersection_of((Start1, End1), (Start2, End2), (NewStart, NewEnd)) :-
 intersection_of((Start1, End1), (Start2, End2), (NewStart, NewEnd)) :-
     Start1 < End1;
     Start2 < End2;
-    NewStart = #max{V : valid_time(V), V = Start1; V : valid_time(V), V = Start2},  % Start of the intersection
-    NewEnd = #min{V : valid_time(V), V = End1; V : valid_time(V), V = End2}; % End of the intersection
+    NewStart = #max{V : time_domain(V), V = Start1; V : time_domain(V), V = Start2},
+    NewEnd = #min{V : time_domain(V), V = End1; V : time_domain(V), V = End2};
     NewStart <= NewEnd;
     e_interval(Start1, End1); e_interval(Start2, End2);
     % Intervals contain each other
@@ -48,8 +50,8 @@ intersection_of((Start1, End1), (Start2, End2), (NewStart, NewEnd)) :-
 union_of((Start1, End1), (Start2, End2), (NewStart, NewEnd)) :-
     Start1 < End1;
     Start2 < End2;
-    NewStart = #min{V : valid_time(V), V = Start1; V : valid_time(V), V = Start2};  % Start of the union
-    NewEnd = #max{V : valid_time(V), V = End1; V : valid_time(V), V = End2};  % End of the union
+    NewStart = #min{V : time_domain(V), V = Start1; V : time_domain(V), V = Start2};
+    NewEnd = #max{V : time_domain(V), V = End1; V : time_domain(V), V = End2};
     NewStart < NewEnd;
     e_interval(Start1, End1); e_interval(Start2, End2);
     End1 = Start2. % Intervals are adjacent
@@ -57,8 +59,8 @@ union_of((Start1, End1), (Start2, End2), (NewStart, NewEnd)) :-
 union_of((Start1, End1), (Start2, End2), (NewStart, NewEnd)) :-
     Start1 < End1;
     Start2 < End2;
-    NewStart = #min{V : valid_time(V), V = Start1; V : valid_time(V), V = Start2};  % Start of the union
-    NewEnd = #max{V : valid_time(V), V = End1; V : valid_time(V), V = End2};  % End of the union
+    NewStart = #min{V : time_domain(V), V = Start1; V : time_domain(V), V = Start2};
+    NewEnd = #max{V : time_domain(V), V = End1; V : time_domain(V), V = End2};
     NewStart < NewEnd;
     e_interval(Start1, End1); e_interval(Start2, End2);
     % Intervals overlap
@@ -69,8 +71,8 @@ union_of((Start1, End1), (Start2, End2), (NewStart, NewEnd)) :-
 union_of((Start1, End1), (Start2, End2), (NewStart, NewEnd)) :-
     Start1 < End1;
     Start2 < End2;
-    NewStart = #min{V : valid_time(V), V = Start1; V : valid_time(V), V = Start2};  % Start of the union
-    NewEnd = #max{V : valid_time(V), V = End1; V : valid_time(V), V = End2};  % End of the union
+    NewStart = #min{V : time_domain(V), V = Start1; V : time_domain(V), V = Start2};
+    NewEnd = #max{V : time_domain(V), V = End1; V : time_domain(V), V = End2};
     NewStart < NewEnd;
     e_interval(Start1, End1); e_interval(Start2, End2);
     % Intervals contain each other
@@ -234,12 +236,3 @@ p_finishes((Start1, End1), (Start2, End2)) :-
     Start2 < End2;
     Start1 = End2;
     e_interval(Start1, End1); e_interval(Start2, End2).
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% helper predicates %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-start(N, P, T, L) :- event(_, N, P, _, (T, _), L); window(S, _); not event(_, N, P, _, (Tx, _), _) : valid_time(Tx), S <= Tx, Tx < T.
-end(N, P, T, L) :- event(_, N, P, _, (_, T), L); window(_, E); not event(_, N, P, _, (_, Tx), _) : valid_time(Tx), T < Tx, Tx <= E.
-
-persist_end(P, T) :- terminates(P, T, _).
