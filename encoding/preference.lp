@@ -1,5 +1,5 @@
 % ==============================================================================
-% CASPER version v1.0.0
+% CASPER version v1.0.1
 % Author: Yvon K. Awuklu
 % Description: Preference encoding for clinical event detection
 % See Theorem 3 in the paper for details

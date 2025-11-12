@@ -21,10 +21,11 @@ lowest_exists(N, L) :- not exists_level_count(N, 1); exists(N, P, _, _, _); L = 
 
 exists_level_count(N, C) :- exists(N, _, _, _, _); C = #count{ P, L : exists(N, P, _, _, L) }.
 terminates_level_count(N, C) :- terminates(N, _, _, _, _); C = #count{ P, L : terminates(N, P, _, _, L) }.
+no_need_more_expansion(N) :- exists_level_count(N, C); C <= 2.
 
 % default termination condition
 terminates(P, T, L) :- obs(death, P, T); L = #min{ Lx : highest_terminates(Lx); Ly: if_highest_exists(Ly) }.  % patient death
-terminates(P, T, L) :- exists(N, P, _, _, _); not obs(death, P, _); T = @ongoing_time(unit); L = #min{ Lx : highest_terminates(Lx); Ly: if_highest_exists(Ly) }. % ongoing event
+terminates(P, T, L) :- exists_pers(N, P, _, _, _); not obs(death, P, _); T = @ongoing_time(unit); L = #min{ Lx : highest_terminates(Lx); Ly: if_highest_exists(Ly) }. % ongoing event
 
 % valid time
 valid_time(T) :- exists(_, _, _, T, _).
@@ -39,3 +40,9 @@ event(@get_id(N, P, E, T1, T2), N, P, E, (T1, T2), L) :- m_event(N, P, E, (T1, T
 % event interval
 e_interval(T1, T2) :- event(_, _, _, _, (T1, T2), _).
 e_interval(T1, T2) :- event(_, _, _, (T1, T2), _).
+
+% level priority ordering
+higher_priority(1, 2).
+higher_priority(1, 3).
+higher_priority(2, 3).
+same_priority(L, L) :- L = 1..3.
