@@ -24,5 +24,5 @@ exists_pers(alk_mutation, P, alk, T, 1) :- obs(has_alk_mut, P, E, T).
 terminates(alk_mutation, P, alk, T, 1) :- obs(has_no_alk_mut, P, E, T).
 
 % expansion window
-pt_window(primary_lungC_episode, c34, 345600).
+pt_window(primary_lungC_episode, c34, 48988800).
 

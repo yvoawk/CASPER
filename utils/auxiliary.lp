@@ -45,4 +45,3 @@ e_interval(T1, T2) :- event(_, _, _, (T1, T2), _).
 higher_priority(1, 2).
 higher_priority(1, 3).
 higher_priority(2, 3).
-same_priority(L, L) :- L = 1..3.

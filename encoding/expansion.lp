@@ -6,11 +6,11 @@
 % ==============================================================================
 
 % find the termination time of the event
-pre_end_obs(N, P, E, (T, Tnext), L) :- exists(N, P, E, T, L1); terminates(N, P, E_, Tnext, L); pt_window(N, E, D); Tnext <= (T + D); Tnext > T;
-    not exists(N, P, _, Tx, _) : valid_time(Tx), T < Tx, Tx <= Tnext.
+pre_end_obs(N, P, E, (T, Tnext), L) :- exists(N, P, E, T, L1); terminates(N, P, E, Tnext, L); pt_window(N, E, D); Tnext <= (T + D); Tnext > T;
+    not exists(N, P, E, Tx, _) : valid_time(Tx), T < Tx, Tx <= Tnext.
 
 pre_end_obs(N, P, E, (T, Tnext), L) :- exists(N, P, E, T, L1); terminates(P, Tnext, L); pt_window(N, E, D); Tnext <= (T + D); Tnext > T;
-    not exists(N, P, _, Tx, _) : valid_time(Tx), T < Tx, Tx <= Tnext.
+    not exists(N, P, E, Tx, _) : valid_time(Tx), T < Tx, Tx <= Tnext.
 
 end_obs(N, P, E, (T, Tnext), L) :- pre_end_obs(N, P, E, (T, Tnext), L); not end_covered(N, P, E, (T, Tnext), L).
 
