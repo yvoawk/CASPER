@@ -125,6 +125,7 @@ To add a new application, create a folder named after your application (no space
 
 - `obs([observation_name], [Patient], ..., [Time])`:  
   Defines an observation fact at a given time.
+  > ⚠️ **Death Observation Format**: Patient death must be recorded exactly as `obs(death, Patient, Time)` so the encodings can correctly detect and propagate the death event.
 
 ### Event Existence
 
