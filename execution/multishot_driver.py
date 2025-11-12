@@ -1,15 +1,20 @@
 #!/usr/bin/env python3
-"""Incremental CASPER runner using clingo's multi-shot interface."""
+# ===============================================================================================
+# CASPER version v1.0.1
+# Author: Yvon K. Awuklu
+# Description: Incremental CASPER runner using clingo's multi-shot interface.
+# ===============================================================================================
+
 from __future__ import annotations
 
 import argparse
 import json
 import pathlib
+import time
 from dataclasses import dataclass, field
 from typing import Iterable, List, Sequence
 
 from clingo import Control, Function, Model, Number
-
 
 @dataclass
 class StepConfig:
@@ -36,8 +41,8 @@ def activate_externals(ctrl: Control, step: StepConfig, value: bool) -> None:
             ctrl.assign_external(atom, value)
 
 
-def collect_model(model: Model, storage: List[str]) -> None:
-    storage.extend(sorted(str(sym) for sym in model.symbols(shown=True)))
+def collect_model(model: Model, storage: List[List[str]]) -> None:
+    storage.append(sorted(str(sym) for sym in model.symbols(shown=True)))
 
 
 def run_incremental(args: argparse.Namespace) -> None:
@@ -46,7 +51,8 @@ def run_incremental(args: argparse.Namespace) -> None:
         base.load(str(file_path))
     base.ground([("base", [])])
 
-    result_store: List[str] = []
+    result_store: List[List[str]] = []
+    solve_start = time.perf_counter()
 
     step_order = parse_step_order(args.facts)
     if not step_order:
@@ -85,11 +91,39 @@ def run_incremental(args: argparse.Namespace) -> None:
             activate_externals(base, StepConfig(step_value, check_activate), False)
         base.cleanup()
 
+    total_time = round(time.perf_counter() - solve_start, 3)
+
+    witnesses = [
+        {"Value": atoms, "Costs": [], "Time": 0.0} for atoms in result_store
+    ]
+    payload = {
+        "Solver": "casper-multishot-driver",
+        "Input": [str(args.facts), *map(str, (args.base + args.step + args.check))],
+        "Call": [
+            {
+                "Start": 0.0,
+                "Stop": total_time,
+                "Witnesses": witnesses,
+            }
+        ],
+        "Result": "SAT" if witnesses else "UNSAT",
+        "Models": {"Number": len(witnesses), "More": "no"},
+        "Calls": 1,
+        "Time": {
+            "Total": total_time,
+            "Solve": total_time,
+            "Model": 0.0,
+            "Unsat": 0.0,
+            "CPU": total_time,
+        },
+        "Stats": {},
+    }
+
+    serialized = json.dumps(payload, indent=2)
     if args.output:
-        args.output.write_text(json.dumps(result_store, indent=2), encoding="utf8")
+        args.output.write_text(serialized, encoding="utf8")
     else:
-        for atom in result_store:
-            print(atom)
+        print(serialized)
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -103,7 +137,7 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def main(argv: Iterable[str] | None = None) -> None:
+def main(argv: Sequence[str] | None = None) -> None:
     parser = build_parser()
     args = parser.parse_args(argv)
     run_incremental(args)

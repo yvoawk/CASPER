@@ -17,12 +17,21 @@ CASPER/
 ├── app/                              # Application directory
 │   └── lung_cancer/                  # Use case on lung cancer
 │       └── domain/                   # Folder for domain knowledge
-│       │   └── atemporal_facts.lp    # Relevant atemporal domain knowledge file
+│       │   ├── raw_atemporal_facts.lp# Optional plain atemporal facts
+│       │   ├── atemporal_facts.lp    # Solver-ready file (editable fallback)
+│       │   └── atemporal_facts.solver.lp # Auto-generated build artifact
 │       ├── facts/                    # Folder for facts
-│       │   └── facts.lp              # Observation facts file
+│       │   ├── raw_facts.lp          # Optional plain obs/4 input
+│       │   ├── facts.lp              # Solver-ready facts (editable fallback)
+│       │   ├── facts.solver.lp       # Auto-generated solver facts
+│       │   └── step_activation.lp    # Auto-generated activation facts
 │       └── user_parameters/          # Folder for event description
-│           ├── simple_event.lp       # Simple event definition file
-│           └── meta_event.lp         # Meta-event defintion file
+│           ├── raw_simple_event.lp   # Optional plain simple-event rules
+│           ├── raw_meta_event.lp     # Optional plain meta-event rules
+│           ├── simple_event.lp       # Solver-ready simple events
+│           ├── meta_event.lp         # Solver-ready meta-events (optional)
+│           ├── simple_event.solver.lp# Auto-generated build artifact
+│           └── meta_event.solver.lp  # Auto-generated build artifact
 ├── encoding/                         # CASPER system core
 │   ├── expansion.lp                  # Expansion technique encoding
 │   ├── linear.lp                     # Linear technique encoding
@@ -37,7 +46,12 @@ CASPER/
 ├── utils/                            # Utility folder
 │   ├── auxiliary.lp                  # Helper predicate
 │   ├── filter_fact.py                # Python function to filter observation facts  
-│   ├── process_answer.py             # Processeing meta-event script      
+│   ├── generate_step_program.py      # Wraps raw obs/4 facts into #program step blocks
+│   ├── generate_step_activation.py   # Creates activation facts for all steps
+│   ├── generate_atemporal_facts.py   # Wraps raw atemporal facts with #program base
+│   ├── generate_simple_events.py     # Wraps raw simple-event rules with guards
+│   ├── generate_meta_events.py       # Wraps raw meta-event rules with guards
+│   ├── process_answer.py             # Processing meta-event script      
 │   └── python.lp                     # Embedded Python utility function
 └── LICENSE                           # License file
 ```
@@ -64,11 +78,14 @@ An example application focused on `lung cancer` can be found in the `./app` dire
 ./execution/run_casper.sh --app=lung_cancer
 ```
 > The results will be output to a subfolder named after your application, located inside the results directory.
+> CASPER now runs entirely in one-shot mode; the runner prepares the necessary `#program step/step_time` files and activation facts automatically before calling Clingo once.
 
 To view usage instructions or available options for CASPER, use the --help flag:
 ```bash
 ./execution/run_casper.sh --help
 ```
+
+
 The output:
 ```bash
 CASPER version 1.0.0
@@ -110,14 +127,27 @@ To add a new application, create a folder named after your application (no space
 - `domain/atemporal_facts.lp`:  
   Contains atemporal domain knowledge relevant to your application.
 
+- `domain/raw_atemporal_facts.lp`:  
+  Optional raw version of the domain facts without `#program` directives. If present, the runner converts it into `atemporal_facts.lp` automatically.
+
+- `facts/raw_facts.lp`:  
+  Contains the observations provided by the user (only `obs/4` literals, one per line).  
+  The runner converts this file into the solver-ready `facts/facts.lp`. Keep `facts.lp` in version control only if you need to inspect it, but treat it as generated output.
+
 - `facts/facts.lp`:  
-  Contains observation facts for your application.
+  Generated automatically from `raw_facts.lp` and includes the `#program step(...)` and `step_time/2` directives required by the temporal encodings. Avoid editing this file manually unless you deliberately skip the generator.
+
+- `user_parameters/raw_simple_event.lp`:  
+  Contains the clinician-authored simple-event rules expressed without any `#program` sections or guard predicates. The runner wraps these rules automatically before execution.
 
 - `user_parameters/simple_event.lp`:  
-  Defines **simple events**, both persistent and non-persistent.
+  Generated from `raw_simple_event.lp` and defines **simple events**, both persistent and non-persistent. Treat this as build output unless you opt out of the generator.
+
+- `user_parameters/raw_meta_event.lp`:  
+  Holds high-level/meta-event rules expressed without multi-shot boilerplate.
 
 - `user_parameters/meta_event.lp` *(optional)*:  
-  Defines **meta-events**, if your application includes any.
+  Generated from `raw_meta_event.lp`; defines **meta-events**, if your application includes any.
 
 ## 🧠 Predicates
 
@@ -234,3 +264,23 @@ MIT License - See [LICENSE](https://github.com/yvoawk/CASPER/blob/master/LICENSE
 📬 Contact
 
 For questions or contributions, please [open an issue](https://github.com/yvoawk/CASPER/issues) or contact the [maintainers](mailto:yvon.awuklu@gmail.com).
+#### Supplying Observation Facts
+1. Describe observations in `app/<app>/facts/raw_facts.lp` (preferred) using `obs(Name, Patient, Value, Timestamp).`.  
+   - If you already maintain a solver-ready file in `facts/facts.lp` that includes `#program step(...)` sections, you can skip the raw file; the runner will use `facts.lp` directly.
+2. When you launch `run_casper.sh`, the script automatically:
+   - Applies the optional `--window` filter (only available when `raw_facts.lp` exists).
+   - Converts the resulting facts into `facts/facts.solver.lp` with the required `#program step(t...)` and `step_time/2` atoms.
+   - Generates `facts/step_activation.lp`, which turns on all `use_*` externals so Clingo can solve in one shot.
+3. Treat `facts.solver.lp` and `step_activation.lp` as build artifacts; they are regenerated on each run.
+
+#### Authoring Simple Event Rules
+- Preferred: edit `app/<app>/user_parameters/raw_simple_event.lp` with plain ASP rules. The runner wraps them via `utils/generate_simple_events.py`, producing `simple_event.solver.lp`.
+- If the raw file is absent, the runner uses `user_parameters/simple_event.lp` as-is. Ensure this file already contains the `#program base.` / `#program step(t).` sections and `use_simple_events/1` guards if you go this route.
+
+#### Authoring Meta-Event Rules
+- Follow the same pattern: `raw_meta_event.lp` → auto-generated `meta_event.solver.lp`.  
+- `user_parameters/meta_event.lp` remains optional; if neither raw nor solver files exist, the meta stage is skipped.
+
+#### Providing Atemporal Domain Facts
+- You can keep a plain version in `domain/raw_atemporal_facts.lp`; the runner wraps it with `utils/generate_atemporal_facts.py`, resulting in `domain/atemporal_facts.solver.lp`.
+- Without the raw file, `domain/atemporal_facts.lp` is used directly (it should already start with `#program base.`).

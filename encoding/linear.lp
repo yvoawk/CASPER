@@ -1,34 +1,55 @@
-#program step(t).
-#external use_linear(t).
-
 % ==============================================================================
-% CASPER version v1.0.0
+% CASPER version v1.0.1
 % Author: Yvon K. Awuklu
 % Description: Linear technique for clinical event detection encoding
 % See Theorem 1 in the paper for details
 % ==============================================================================
 
+#program step(t).
+#external use_linear(t).
+
 pre_end_obs(N, P, E, (T, Tnext), L) :-
-    use_linear(t),
-    active_exists_pers(N, P, E, T, _),
-    active_terminates(N, P, _, Tnext, L),
-    Tnext > T,
+    use_linear(t);
+    active_exists_pers(N, P, E, T, _);
+    active_terminates(N, P, _, Tnext, L);
+    Tnext > T;
     not active_exists_pers(N, P, _, Tx, _) : time_domain(Tx), T < Tx, Tx < Tnext.
 
 pre_end_obs(N, P, E, (T, Tnext), L) :-
-    use_linear(t),
-    active_exists_pers(N, P, E, T, _),
-    active_terminates(P, Tnext, L),
-    Tnext > T,
+    use_linear(t);
+    active_exists_pers(N, P, E, T, _);
+    active_terminates(P, Tnext, L);
+    Tnext > T;
     not active_exists_pers(N, P, _, Tx, _) : time_domain(Tx), T < Tx, Tx < Tnext.
 
 l_candidate(N, P, E, (Tx, Tx), L) :-
-    use_linear(t),
+    use_linear(t);
     active_exists_pers(N, P, E, Tx, L).
 
 e_candidate(N, P, E, (T1, T2), L) :-
-    use_linear(t),
-    l_candidate(N, P, E, (T1, T2_), L1),
-    pre_end_obs(N, P, E, (T1_, T2), L2),
-    not active_terminates(N, P, E, T, _) : time_domain(T), T2_ < T, T < T2,
+    use_linear(t);
+    l_candidate(N, P, E, (T1, T2_), L1);
+    pre_end_obs(N, P, E, (T1_, T2), L2);
+    not active_terminates(N, P, E, T, _) : time_domain(T), T2_ < T, T < T2;
     L = #max{ Lx : l_candidate(N, P, E, (T1, T2_), Lx); Ly : pre_end_obs(N, P, E, (T1_, T2), Ly) }.
+
+covered(N, P, E, (T1, T2), L) :-
+    use_linear(t);
+    e_candidate(N, P, E, (T1, T2), L);
+    e_candidate(N, P, E, (T1_, T2_), L);
+    T2_ >= T2;
+    T1_ <= T1;
+    T2_ - T1_ > T2 - T1.
+
+covered(N, P, E, (T1, T2), L) :-
+    use_linear(t);
+    e_candidate(N, P, E, (T1, T2), L);
+    e_candidate(N, P, _, (T1_, T2_), Lx);
+    T2_ >= T2;
+    T1_ <= T1;
+    Lx < L.
+
+event(@get_id(N, P, E, T1, T2), N, P, E, (T1, T2), L) :-
+    use_linear(t);
+    e_candidate(N, P, E, (T1, T2), L);
+    not covered(N, P, E, (T1, T2), L).
