@@ -1,0 +1,26 @@
+{
+  "Solver": "clingo",
+  "Input": [],
+  "Call": [
+    {
+      "Start": 0,
+      "Witnesses": [
+        {
+          "Time": 0.3,
+          "Value": [
+            "event(301,cautious_episode,1000582,(1105574400,1106006400),2)",
+            "event(302,follow_up,1000582,(1106352000,1106352000),1)",
+            "event(303,response,1000582,(1106500000,1106600000),1)",
+            "event(304,survival,1000582,(1107000000,1109000000),3)"
+          ]
+        }
+      ],
+      "Stop": 0.3
+    }
+  ],
+  "Result": "CAUTIOUS",
+  "Models": { "Number": 5, "More": "no" },
+  "Calls": 1,
+  "Time": { "Total": 0.3, "Solve": 0.12, "Model": 0.1, "Unsat": 0.0, "CPU": 0.28 },
+  "Threads": 6
+}

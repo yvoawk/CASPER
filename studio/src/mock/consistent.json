@@ -1,0 +1,59 @@
+{
+  "Solver": "clingo version 5.8.0",
+  "Input": [
+    "./app/lung_cancer/facts/facts.lp",
+    "./encoding/expansion.lp",
+    "./encoding/linear.lp",
+    "./app/lung_cancer/domain/atemporal_facts.lp",
+    "./utils/auxiliary.lp",
+    "./app/lung_cancer/user_parameters/simple_event.lp",
+    "./encoding/repair.lp",
+    "./app/lung_cancer/user_parameters/meta_event.lp"
+  ],
+  "Call": [
+    {
+      "Start": 0.0,
+      "Witnesses": [
+        {
+          "Time": 0.115,
+          "Value": [
+            "event(98267931,lung_cancer_disease,1000582,(1105574400,1107734400),2)",
+            "event(70134214,tki_target_therapy,1000582,erlotinib,(1105747200,1106352000),1)",
+            "event(35805366,egfr_mutation,1000582,egfr,(1105574400,1106006400),1)",
+            "event(88251757,secondary_cancer_episode,1000582,c787,(1106433840,1107734400),2)",
+            "event(30346907,tki_target_therapy,1000582,osimertinib,(1106352000,1107734400),1)",
+            "event(43163021,primary_lungC_episode,1000582,c34,(1105574400,1107734400),2)"
+          ]
+        },
+        {
+          "Time": 0.115,
+          "Value": [
+            "event(16892709,lung_cancer_disease,1000582,(1105747200,1107734400),1)",
+            "event(70134214,tki_target_therapy,1000582,erlotinib,(1105747200,1106352000),1)",
+            "event(35805366,egfr_mutation,1000582,egfr,(1105574400,1106006400),1)",
+            "event(88251757,secondary_cancer_episode,1000582,c787,(1106433840,1107734400),2)",
+            "event(30346907,tki_target_therapy,1000582,osimertinib,(1106352000,1107734400),1)",
+            "event(42374836,primary_lungC_episode,1000582,c34,(1105747200,1105920000),1)"
+          ]
+        }
+      ],
+      "Stop": 0.064
+    }
+  ],
+  "Result": "SATISFIABLE",
+  "Models": {
+    "Number": 2,
+    "More": "no"
+  },
+  "Calls": 1,
+  "Time": {
+    "Total": 0.064,
+    "Solve": 0.0,
+    "Model": 0.0,
+    "Unsat": 0.0,
+    "CPU": 0.062
+  },
+  "Threads": 8,
+  "Winner": 4,
+  "Stats": {}
+}

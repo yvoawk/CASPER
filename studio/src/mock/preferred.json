@@ -1,0 +1,25 @@
+{
+  "Solver": "clingo",
+  "Input": [],
+  "Call": [
+    {
+      "Start": 0,
+      "Witnesses": [
+        {
+          "Time": 0.2,
+          "Value": [
+            "event(222,lung_cancer_disease,1000582,(1105574400,1107734400),1)",
+            "event(223,tki_target_therapy,1000582,osimertinib,(1106352000,1107734400),1)",
+            "event(224,progression,1000582,(1107000000,1107200000),2)"
+          ]
+        }
+      ],
+      "Stop": 0.2
+    }
+  ],
+  "Result": "OPTIMUM FOUND",
+  "Models": { "Number": 3, "More": "no" },
+  "Calls": 1,
+  "Time": { "Total": 0.2, "Solve": 0.1, "Model": 0.05, "Unsat": 0.0, "CPU": 0.19 },
+  "Threads": 4
+}
