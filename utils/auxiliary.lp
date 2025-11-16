@@ -8,9 +8,17 @@
 
 #include "../encoding/temporal_predicate.lp".
 
+#const start = -1.
+#const end = -1.
+
+window_override :- start >= 0, end >= 0, start < end.
+
 % window
-w_start(T) :- T = #min{ Tx : obs(_, _, _, Tx) }; T >= 0.
-w_end(T + @get_shift(unit)) :- T = #max{ Tx : obs(_, _, _, Tx) }.
+w_start(S) :- window_override; S = start.
+w_end(E) :- window_override; E = end + @get_shift(unit).
+
+w_start(T) :- not window_override; T = #min{ Tx : obs(_, _, _, Tx) }; T >= 0.
+w_end(T + @get_shift(unit)) :- not window_override; T = #max{ Tx : obs(_, _, _, Tx) }.
 
 window(S, E) :- w_start(S); w_end(E).
 
@@ -25,7 +33,8 @@ no_need_more_expansion(N) :- exists_level_count(N, C); C <= 2.
 
 % default termination condition
 terminates(P, T, L) :- obs(death, P, T); L = #min{ Lx : highest_terminates(Lx); Ly: if_highest_exists(Ly) }.  % patient death
-terminates(P, T, L) :- exists_pers(N, P, _, _, _); not obs(death, P, _); T = @ongoing_time(unit); L = #min{ Lx : highest_terminates(Lx); Ly: if_highest_exists(Ly) }. % ongoing event
+terminates(P, T, L) :- not window_override; exists_pers(N, P, _, _, _); not obs(death, P, _); T = @ongoing_time(unit); L = #min{ Lx : highest_terminates(Lx); Ly: if_highest_exists(Ly) }. % ongoing event
+terminates(P, T, L) :- window_override; exists_pers(N, P, _, _, _); not obs(death, P, _); T = end + @get_shift(unit); L = #min{ Lx : highest_terminates(Lx); Ly: if_highest_exists(Ly) }. % ongoing event with window override
 
 % valid time
 valid_time(T) :- exists(_, _, _, T, _).

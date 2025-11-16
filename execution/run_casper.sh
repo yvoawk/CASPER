@@ -18,7 +18,7 @@ WIN_START=""
 WIN_END=""
 UNIT="seconds"
 PYTHON_SCRIPT="./utils/process_answers.py"
-FILTER_SCRIPT="./utils/filter_fact.py"
+#FILTER_SCRIPT="./utils/filter_fact.py"
 
 show_help() {
   echo "CASPER version $VERSION"
@@ -214,13 +214,7 @@ BASE_OPTS="--mode=clingo --opt-mode=optN --models 0 --parallel-mode=$THREADS --o
 
 if [[ "$WINDOW" ]]; then
   echo "🔍 Applying time window: $WINDOW"
-  python "$FILTER_SCRIPT" "$ALL_FACTS" "$FILTER_FACTS" "$WIN_START" "$WIN_END"
-  if [[ $? -ne 0 ]]; then
-    echo "❌ Error: Failed to filter facts with time window."
-    exit 1
-  fi
-  BASE_FILES="$FILTER_FACTS $APP_DIR/user_parameters/simple_event.lp $APP_DIR/domain/atemporal_facts.lp ./utils/auxiliary.lp ./encoding/expansion.lp ./encoding/linear.lp"
-  BASE_FILES_2="$FILTER_FACTS $APP_DIR/user_parameters/simple_event.lp $APP_DIR/domain/atemporal_facts.lp ./utils/auxiliary.lp ./execution/parameters1.lp"
+  BASE_OPTS="$BASE_OPTS -c start=$WIN_START -c end=$WIN_END"
 fi
 
 if [[ "$REPAIR" == "no" ]]; then

@@ -5,6 +5,9 @@
 # ================================================================================================
 
 import sys
+import re
+
+TIME_VALUE_PATTERN = re.compile(r',\s*([+-]?\d+)\)\.\s*$')
 
 def filter_facts(input_file, output_file, start, end):
     """
@@ -17,20 +20,33 @@ def filter_facts(input_file, output_file, start, end):
         end (str): End value of T to filter by.
     """
     try:
+        start_num = int(start)
+        end_num = int(end)
+    except ValueError:
+        print(f"Error: Start '{start}' and end '{end}' must be integers.")
+        return
+
+    try:
         with open(input_file, "r") as infile, open(output_file, "w") as outfile:
             for line in infile:
-                if line.startswith("obs(") and line.strip().endswith(")."):
-                    parts = line.strip().split(",")
-                    if len(parts) > 2:
-                        last_value = parts[-1].strip(").")
-                        try:
-                            last_value_num = int(last_value)
-                            start_num = int(start)
-                            end_num = int(end)
-                            if start_num <= last_value_num <= end_num:
-                                outfile.write(line)
-                        except ValueError:
-                            print(f"Warning: Could not convert '{last_value}', '{start}', or '{end}' to integer.")
+                # Remove inline ASP comments that begin with %
+                content = line.split("%", 1)[0].strip()
+                if not content or not content.startswith("obs("):
+                    continue
+
+                match = TIME_VALUE_PATTERN.search(content)
+                if not match:
+                    continue
+
+                last_value = match.group(1)
+                try:
+                    last_value_num = int(last_value)
+                except ValueError:
+                    print(f"Warning: Could not convert '{last_value}' to integer.")
+                    continue
+
+                if start_num <= last_value_num <= end_num:
+                    outfile.write(line)
         print(f"Filtered facts have been written to {output_file}.")
     except FileNotFoundError:
         print(f"Error: The file {input_file} does not exist.")
