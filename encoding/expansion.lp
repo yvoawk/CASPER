@@ -86,7 +86,7 @@ e_candidate(N, P, E, (T1_, T2), L) :- e_candidate(N, P, E, (T1, T2), Lx); e_cand
 
 % expansion with termination condition
 e_candidate(N, P, E, (T1, Tf), L) :- e_candidate(N, P, E, (T1, T2), L1); end_obs(N, P, E, (T2, Tf), L2);
-    L = #max{ Lx : e_candidate(N, P, E, (T1, T2), Lx); Ly : end_obs(N, P, E, (T2, Tf), Ly) }.
+    L = #max{ L1; L2 }.
 
 % meet e_candidate
 e_candidate(N, P, E, (T1, T2), L) :- e_candidate(N, P, E, (T1, T), L); e_candidate(N, P, E, (T, T2), L).

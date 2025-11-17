@@ -15,6 +15,9 @@ exists_pers(secondary_cancer_episode, P, E, T, 2) :- obs(has_icd10_diag, P, E, T
 exists_pers(tki_target_therapy, P, D, T, 1) :- obs(has_adm, P, D, T); tki(D).
 terminates(tki_target_therapy, P, D, T, 1) :- obs(has_adm, P, D1, T); obs(has_adm, P, D, T1); tki(D1); tki(D); D != D1; T1 < T.
 
+exists_pers(tki_target_therapy, P, D, T, 2) :- obs(has_presc, P, D, T); tki(D).
+terminates(tki_target_therapy, P, D, T, 2) :- obs(has_presc, P, D1, T); obs(has_presc, P, D, T1); tki(D1); tki(D); D != D1; T1 < T.
+
 % egfr mutation
 exists_pers(egfr_mutation, P, egfr, T, 1) :- obs(has_egfr_mut, P, E, T).
 terminates(egfr_mutation, P, egfr, T, 1) :- obs(has_no_egfr_mut, P, E, T).
