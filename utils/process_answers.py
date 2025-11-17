@@ -75,30 +75,38 @@ def main():
 
     witnesses = data["Call"][0]["Witnesses"]
 
-    # Initialize cumulative timers
-    cumulative_time = 0.0
-    cumulative_cpu = 0.0
+    # Seed cumulative timers with the time already spent in stage 1 (repair step)
+    base_total_time = data.get("Time", {}).get("Total", 0.0)
+    base_cpu_time = data.get("Time", {}).get("CPU", 0.0)
 
     def process_witness(witness):
-        nonlocal cumulative_time, cumulative_cpu
         simple_events = witness["Value"]
         complex_result, t_total, t_cpu = compute_meta_events(base_files, meta_event, simple_events, unit)
 
-        witness["Value"] = [str(e) for e in complex_result] if complex_result else []
-        witness["Time"] += round(t_total, 3)
-        cumulative_time += t_total
-        cumulative_cpu += t_cpu
-        return witness
+        updated_witness = dict(witness)
+        updated_witness["Value"] = [str(e) for e in complex_result] if complex_result else []
+        updated_witness["Time"] = round(witness.get("Time", 0.0) + t_total, 3)
+        return updated_witness, t_total, t_cpu
+
+    cumulative_time = 0.0
+    cumulative_cpu = 0.0
+    results = []
 
     with ThreadPoolExecutor(max_workers=thread_count) as executor:
-        results = list(executor.map(process_witness, witnesses))
+        for updated_witness, t_total, t_cpu in executor.map(process_witness, witnesses):
+            results.append(updated_witness)
+            cumulative_time += t_total
+            cumulative_cpu += t_cpu
 
     data["Call"][0]["Witnesses"] = results
 
-    # Update Time field
-    data["Call"][0]["Stop"] = round(cumulative_time, 3)
-    data["Time"]["Total"] = round(cumulative_time, 3)
-    data["Time"]["CPU"] = round(cumulative_cpu, 3)
+    # Update Time field (add stage 2 duration to stage 1 baseline)
+    total_time = round(base_total_time + cumulative_time, 3)
+    total_cpu = round(base_cpu_time + cumulative_cpu, 3)
+
+    data["Call"][0]["Stop"] = total_time
+    data["Time"]["Total"] = total_time
+    data["Time"]["CPU"] = total_cpu
 
     # Update Input field
     data["Input"] = [
