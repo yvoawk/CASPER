@@ -239,7 +239,7 @@ p_finishes((Start1, End1), (Start2, End2)) :-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% helper predicates %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-start(N, P, T, L) :- event(_, N, P, _, (T, _), L); T = #min{ Tx : event(_, N, P, _, (Tx, _), L) }.
-end(N, P, T, L) :- event(_, N, P, _, (_, T), L); T = #max{ Tx : event(_, N, P, _, (_, Tx), L) }.
+start(N, P, T, L) :- event(_, N, P, _, (T, _), L); T = #min{ Tx : event(_, N, P, _, (Tx, _), _) }.
+end(N, P, T, L) :- event(_, N, P, _, (_, T), L); T = #max{ Tx : event(_, N, P, _, (_, Tx), _) }.
 
 persist_end(P, T) :- terminates(P, T, _).
