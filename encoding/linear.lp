@@ -1,5 +1,5 @@
 % ==============================================================================
-% CASPER version v1.0.1
+% CASPER version v1.0.2
 % Author: Yvon K. Awuklu
 % Description: Linear technique for clinical event detection encoding
 % See Theorem 1 in the paper for details
@@ -21,7 +21,8 @@ pe_covered_by_higher(N, P, E, (T1, T1), L) :-
     T2_ >= T1.
 
 % initialization of persistent simple event
-l_candidate(N, P, E, (Tx, Tx), L) :- exists_pers(N, P, E, Tx, L).
+l_candidate(N, P, E, (Tx, Tx), L) :- exists_pers(N, P, E, Tx, L);
+    L = #min{ Lx : exists_pers(N, P, E, Tx, Lx) }.
 
 pe_candidate(N, P, E, (T1, T2), L) :- l_candidate(N, P, E, (T1, T1), L1); end_obs(N, P, E, (T1_, T2), L2); window(S, _); T1_ >= T1;
     not pe_covered_by_higher(N, P, E, (T1, T1), L1);
@@ -38,4 +39,3 @@ pe_candidate(N, P, E, (T1, T2), L) :- l_candidate(N, P, E, (T1, T1), L1); end_ob
 
 % final event
 event(@get_id(N, P, E, T1, T2_), N, P, E, (T1, T2_), L) :- pe_candidate(N, P, E, (T1, T2_), L).
-

@@ -71,7 +71,7 @@ To view usage instructions or available options for CASPER, use the --help flag:
 ```
 The output:
 ```bash
-CASPER version 1.0.0
+CASPER version 1.0.2
 Usage: ./execution/run_casper.sh --app=APP_NAME [OPTIONS]
 
 Required:
@@ -137,8 +137,7 @@ To add a new application, create a folder named after your application (no space
   Specifies the existence of a **persistent** simple event.
 
 > ⚠️ **Note**:  
-> - The `Time` argument must be a non-null integer.  
-> - CASPER currently supports **three levels of confidence** for initiation: `1` (highest), `2`, and `3` (lowest), and **one level for termination**.
+> - The `Time` argument must be a non-null integer.
 
 ### Termination
 
@@ -206,8 +205,6 @@ In addition to event inference, CASPER provides built-in support for:
 - Confidence Propagation
   
   Ensures that the confidence of inferred (simple or meta) events reflects the lowest confidence among their supporting observations and sub-events.
-
-  > ⚠️ CASPER supports up to 3 confidence levels for existence conditions (1 = high, 2, 3 = low), and a single level (1) for termination.
 
 - Repair Option (Temporal Repair Only)
   
