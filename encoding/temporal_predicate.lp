@@ -1,5 +1,5 @@
 % ==============================================================================
-% CASPER version v1.0.1
+% CASPER version v1.0.2
 % Author: Yvon K. Awuklu
 % Description: temporal predicates encoding
 % ==============================================================================

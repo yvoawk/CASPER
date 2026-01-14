@@ -1,14 +1,14 @@
 #!/bin/bash
 
 # ==============================================================================
-# CASPER Workflow Runner Script (v1.0.1)
+# CASPER Workflow Runner Script (v1.0.2)
 # Author: Yvon K. Awuklu
 # Description: Executes Clinical ASP-based Event Recognition System
 # ==============================================================================
 
 trap 'echo "⚠️  Interrupted, cleaning up..."; exit 1' INT TERM
 
-VERSION="1.0.1"
+VERSION="1.0.2"
 REPAIR="no"
 THREADS=1
 VERBOSE="no"

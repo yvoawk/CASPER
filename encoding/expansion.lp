@@ -1,5 +1,5 @@
 % ==============================================================================
-% CASPER version v1.0.1
+% CASPER version v1.0.2
 % Author: Yvon K. Awuklu
 % Description: Expansion technique for clinical event detection encoding
 % See Theorem 1 in the paper for details
@@ -7,10 +7,10 @@
 
 % find the termination time of the event
 pre_end_obs(N, P, E, (T, Tnext), L) :- exists(N, P, E, T, L1); terminates(N, P, E, Tnext, L); pt_window(N, E, D); Tnext <= (T + D); Tnext > T;
-    not exists(N, P, E, Tx, _) : valid_time(Tx), T < Tx, Tx <= Tnext.
+    not exists(N, P, E, Tx, _) : valid_time(Tx), T < Tx, Tx <= Tnext; L1 = #min{ Lx : exists(N, P, E, T, Lx) }; L = #min{ Lx : terminates(N, P, E, Tnext, Lx) }.
 
 pre_end_obs(N, P, E, (T, Tnext), L) :- exists(N, P, E, T, L1); terminates(P, Tnext, L); pt_window(N, E, D); Tnext <= (T + D); Tnext > T;
-    not exists(N, P, E, Tx, _) : valid_time(Tx), T < Tx, Tx <= Tnext.
+    not exists(N, P, E, Tx, _) : valid_time(Tx), T < Tx, Tx <= Tnext; L1 = #min{ Lx : exists(N, P, E, T, Lx) }.
 
 end_obs(N, P, E, (T, Tnext), L) :- pre_end_obs(N, P, E, (T, Tnext), L); not end_covered(N, P, E, (T, Tnext), L).
 
@@ -60,15 +60,16 @@ e_covered_by_higher(N, P, (T1, T2), L) :-
     T2_ >= T2.
 
 % initialization of non-persistent simple event
-pre_candidate(N, P, E, (Tx, Tx), L) :- exists(N, P, E, Tx, L).
+pre_candidate(N, P, E, (Tx, Tx), L) :- exists(N, P, E, Tx, L);
+    L = #min{ Lx : exists(N, P, E, Tx, Lx) }.
 
 % forward expansion of event
 % first expansion with the highest priority level
-pre_candidate(N, P, E, (T1, T2_), L) :- highest_exists(N, L); pre_candidate(N, P, E, (T1, T2), L); pre_candidate(N, P, E, (T1_, T2_), L); pt_window(N, E, D); T1_ <= (T2 + D); T1_ > T2;
+pre_candidate(N, P, E, (T1, T2_), L) :- highest_exists_per_event(N, L); pre_candidate(N, P, E, (T1, T2), L); pre_candidate(N, P, E, (T1_, T2_), L); pt_window(N, E, D); T1_ <= (T2 + D); T1_ > T2;
     not terminates(N, P, _, Tx, _) : valid_time(Tx), T2 <= Tx, Tx <= T1_.
 
-pre_candidate(N, P, E, (T1, T2_), L) :- not no_need_more_expansion(N); highest_exists(N, L1); lowest_exists(N, L2); L > L1; L < L2; pre_candidate(N, P, E, (T1, T2), L); pre_candidate(N, P, E, (T1_, T2_), L); pt_window(N, E, D); T1_ <= (T2 + D); T1_ > T2;
-    not exists(N, P, _, Ty, L1) : valid_time(Ty), T2 <= Ty, Ty <= T1_, higher_priority(L1, L); 
+pre_candidate(N, P, E, (T1, T2_), L) :- not no_need_more_expansion(N); next_level(N, L1, L); pre_candidate(N, P, E, (T1, T2), L1); pre_candidate(N, P, E, (T1_, T2_), L); pt_window(N, E, D); T1_ <= (T2 + D); T1_ > T2;
+    not exists(N, P, _, Ty, L1) : valid_time(Ty), T2 <= Ty, Ty <= T1_; 
     not terminates(N, P, _, Tx, _) : valid_time(Tx), T2 <= Tx, Tx <= T1_.
 
 e_candidate(N, P, E, (T1, T2_), L) :- pre_candidate(N, P, E, (T1, T2_), L); not pre_covered(N, P, E, (T1, T2_), L).

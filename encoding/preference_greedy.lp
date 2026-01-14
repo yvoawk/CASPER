@@ -1,5 +1,5 @@
 % ==============================================================================
-% CASPER version v1.0.1
+% CASPER version v1.0.2
 % Author: Yvon K. Awuklu
 % Description: Preferred repair encoding
 % See Section 2.2 & Section 2.3 (Definitions 6, 7, 8) in the paper for details
@@ -108,3 +108,23 @@ violation_with_rep3_if_added(N,P,E,(S,Ee)) :-
 rep_event(ID,N,P,E,(S,Ee),L) :- rep1(ID,N,P,E,(S,Ee)), L=1.
 rep_event(ID,N,P,E,(S,Ee),L) :- rep2(ID,N,P,E,(S,Ee)), L=2.
 rep_event(ID,N,P,E,(S,Ee),L) :- rep3(ID,N,P,E,(S,Ee)), L=3.
+
+conflict_higher2(N,P,E,(S,Ee)) :-
+    rep1(_,N,P,E,(S1,E1)), contains((S1,E1),(S,Ee)), event(_,N,P,E,(S,Ee),2).
+conflict_higher2(N,P,E,(S1,E1)) :-
+    rep1(_,N,P,E,(S,Ee)), contains((S1,E1),(S,Ee)), event(_,N,P,E,(S1,E1),2).
+
+conflict_higher3(N,P,E,(S,Ee)) :-
+    rep1(_,N,P,E,(S1,E1)), contains((S1,E1),(S,Ee)), rep3(_,N,P,E,(S,Ee)).
+conflict_higher3(N,P,E,(S1,E1)) :-
+    rep1(_,N,P,E,(S,Ee)), contains((S1,E1),(S,Ee)), rep3(_,N,P,E,(S1,E1)).
+
+conflict_higher3(N,P,E,(S,Ee)) :-
+    rep2(_,N,P,E,(S2,E2)), contains((S2,E2),(S,Ee)), rep3(_,N,P,E,(S,Ee)).
+conflict_higher3(N,P,E,(S2,E2)) :-
+    rep2(_,N,P,E,(S,Ee)), contains((S2,E2),(S,Ee)), rep3(_,N,P,E,(S2,E2)).
+
+inconsistent_if_added(N, P, E, (Start1, End1)) :- rep3(_, N, P, E, (Start2, End2), _), contains((Start1, End1), (Start2, End2)).
+inconsistent_if_added(N, P, E, (Start2, End2)) :- rep3(_, N, P, E, (Start1, End1), _), contains((Start1, End1), (Start2, End2)).
+
+:- not rep3(_, N, P, E, (Start, End)), event(_, N, P, E, (Start, End), 3), not inconsistent_if_added(N, P, E, (Start, End)).
