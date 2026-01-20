@@ -1,14 +1,14 @@
 #!/bin/bash
 
 # ==============================================================================
-# CASPER Workflow Runner Script (v1.0.2)
+# CASPER Workflow Runner Script (v1.0.3)
 # Author: Yvon K. Awuklu
 # Description: Executes Clinical ASP-based Event Recognition System
 # ==============================================================================
 
 trap 'echo "⚠️  Interrupted, cleaning up..."; exit 1' INT TERM
 
-VERSION="1.0.2"
+VERSION="1.0.3"
 REPAIR="no"
 THREADS=1
 VERBOSE="no"
@@ -75,7 +75,7 @@ while [[ $# -gt 0 ]]; do
   --version)
     echo "CASPER version $VERSION"
     echo
-    echo "Copyright (c) 2025 Yvon K. Awuklu"
+    echo "Copyright (c) 2026 Yvon K. Awuklu"
     echo
     echo "Licensed under the MIT License <https://opensource.org/licenses/MIT>."
     exit 0
@@ -113,7 +113,7 @@ if [[ -n "$WINDOW" ]]; then
     WIN_START="${BASH_REMATCH[1]}"
     WIN_END="${BASH_REMATCH[2]}"
     if ((WIN_END <= WIN_START)); then
-      echo "❌ Invalid --WINDOW value: End time must be greater than start time."
+      echo "❌ Invalid --window value: End time must be greater than start time."
       exit 1
     fi
   else

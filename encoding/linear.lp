@@ -1,5 +1,5 @@
 % ==============================================================================
-% CASPER version v1.0.2
+% CASPER version v1.0.3
 % Author: Yvon K. Awuklu
 % Description: Linear technique for clinical event detection encoding
 % See Theorem 1 in the paper for details

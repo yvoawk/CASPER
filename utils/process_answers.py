@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 # ===============================================================================================
-# CASPER version v1.0.2
+# CASPER version v1.0.3
 # Author: Yvon K. Awuklu
 # Description: Python script to compute meta-events from simple events using Clingo CLI.
 # ================================================================================================
