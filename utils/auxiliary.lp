@@ -29,7 +29,7 @@ lowest_exists_per_event(N, L) :- not exists_level_count(N, 1); exists(N, P, _, _
 
 exists_level_count(N, C) :- exists(N, _, _, _, _); C = #count{ P, L : exists(N, P, _, _, L) }.
 terminates_level_count(N, C) :- terminates(N, _, _, _, _); C = #count{ P, L : terminates(N, P, _, _, L) }.
-no_need_more_expansion(N) :- exists_level_count(N, C); C <= 2.
+need_more_expansion(N) :- exists_level_count(N, C); C > 1.
 
 % default termination condition
 terminates(P, T, L) :- obs(death, P, T); L = #min{ Lx : highest_terminates(Lx); Ly: if_highest_exists(Ly) }.  % patient death

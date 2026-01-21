@@ -66,12 +66,12 @@ e_candidate(N, P, E, (T1, T2_), L) :- pre_candidate(N, P, E, (T1, T2_), L); not 
 
 % second expansion with other priority levels
 % forward expansion of event
-e_candidate(N, P, E, (T1, T2_), L) :- not no_need_more_expansion(N); next_level(N, L1, L); e_candidate(N, P, E, (T1, T2), L1); e_candidate(N, P, E, (T1_, T2_), L); pt_window(N, E, D);
+e_candidate(N, P, E, (T1, T2_), L) :- need_more_expansion(N); next_level(N, L1, L); e_candidate(N, P, E, (T1, T2), L1); e_candidate(N, P, E, (T1_, T2_), L); pt_window(N, E, D);
     T1_ = #max{ Ty : exists(N, P, _, Ty, L) , Ty <= (T2 + D), Ty > T2 }; 
     not terminates(N, P, _, Tx, _) : valid_time(Tx), T2 <= Tx, Tx <= T1_.
 
 % backward expansion of event
-e_candidate(N, P, E, (T1_, T2), L) :- not no_need_more_expansion(N); next_level(N, L1, L); e_candidate(N, P, E, (T1, T2), Lx); e_candidate(N, P, E, (T1_, T2_), L); pt_window(N, E, D);
+e_candidate(N, P, E, (T1_, T2), L) :- need_more_expansion(N); next_level(N, L1, L); e_candidate(N, P, E, (T1, T2), Lx); e_candidate(N, P, E, (T1_, T2_), L); pt_window(N, E, D);
     T2_ = #min{ Ty : exists(N, P, _, Ty, L) , Ty >= (T1 - D), Ty < T1 };
     not terminates(N, P, _, Tx, _) : valid_time(Tx), T2_ <= Tx, Tx <= T1.
 
