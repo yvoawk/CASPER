@@ -190,7 +190,7 @@ FILTER_FACTS="$APP_DIR/facts/filter_facts.lp"
   exit 1
 }
 
-BASE_FILES="$APP_DIR/facts/facts.lp ./encoding/expansion.lp ./encoding/linear.lp $APP_DIR/domain/atemporal_facts.lp ./utils/auxiliary.lp"
+BASE_FILES="$APP_DIR/facts/facts.lp ./encoding/np_simple_event.lp ./encoding/p_simple_event.lp $APP_DIR/domain/atemporal_facts.lp ./utils/auxiliary.lp"
 BASE_FILES_2="$APP_DIR/facts/facts.lp $APP_DIR/user_parameters/simple_event.lp $APP_DIR/domain/atemporal_facts.lp ./utils/auxiliary.lp ./execution/parameters1.lp"
 
 echo "📦 Running CASPER v$VERSION"
@@ -219,7 +219,7 @@ if [[ "$WINDOW" ]]; then
     echo "❌ Error: Failed to filter facts with time window."
     exit 1
   fi
-  BASE_FILES="$FILTER_FACTS $APP_DIR/user_parameters/simple_event.lp $APP_DIR/domain/atemporal_facts.lp ./utils/auxiliary.lp ./encoding/expansion.lp ./encoding/linear.lp"
+  BASE_FILES="$FILTER_FACTS $APP_DIR/user_parameters/simple_event.lp $APP_DIR/domain/atemporal_facts.lp ./utils/auxiliary.lp ./encoding/np_simple_event.lp ./encoding/p_simple_event.lp"
   BASE_FILES_2="$FILTER_FACTS $APP_DIR/user_parameters/simple_event.lp $APP_DIR/domain/atemporal_facts.lp ./utils/auxiliary.lp ./execution/parameters1.lp"
   BASE_OPTS="$BASE_OPTS -c start=$WIN_START -c end=$WIN_END"
 fi
@@ -237,7 +237,7 @@ if [[ "$REPAIR" == "no" ]]; then
 else
   echo "🔧 Stage 1: Simple events with repair..."
   if [[ "$TIMELINE" == "preferred" ]]; then
-    clingo $BASE_OPTS $BASE_FILES "$SIMPLE_EVENT" ./encoding/repair.lp ./execution/parameters3.lp ./encoding/preference.lp >"$TEMP_JSON"
+    clingo $BASE_OPTS $BASE_FILES "$SIMPLE_EVENT" ./execution/parameters3.lp ./encoding/greedy_preference.lp >"$TEMP_JSON"
   else
     clingo $BASE_OPTS $BASE_FILES "$SIMPLE_EVENT" ./encoding/repair.lp ./execution/parameters3.lp >"$TEMP_JSON"
   fi

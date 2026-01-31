@@ -33,5 +33,5 @@ rep_event(ID, N, P, E, (Start, End), L) :-
     event(ID, N, P, E, (Start, End), L),
     not temporal_conflict_with_lower_level(N, P, E, (Start, End), L).
 
-#show event(ID, N, P, E, (Start, End), L) : rep_event(ID, N, P, E, (Start, End), L).
-#show event/5.
+%#show event(ID, N, P, E, (Start, End), L) : rep_event(ID, N, P, E, (Start, End), L).
+%#show event/5.
