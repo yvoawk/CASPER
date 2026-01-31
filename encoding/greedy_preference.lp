@@ -2,7 +2,7 @@
 % CASPER version v1.0.3
 % Author: Yvon K. Awuklu
 % Description: Greedy preference encoding
-% See Theorem 3 in the paper for details
+% See Theorem 5 in the paper for details
 % ==============================================================================
 
 temporal_conflict_with_lower_level(N, P, E, (Start2, End2), L2) :-

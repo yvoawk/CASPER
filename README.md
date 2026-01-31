@@ -24,9 +24,9 @@ CASPER/
 │           ├── simple_event.lp       # Simple event definition file
 │           └── meta_event.lp         # Meta-event defintion file
 ├── encoding/                         # CASPER system core
-│   ├── expansion.lp                  # Expansion technique encoding
-│   ├── linear.lp                     # Linear technique encoding
-│   ├── preference.lp                 # Preference encoding
+│   ├── np_simple_event.lp            # Expansion technique encoding
+│   ├── p_simple_event.lp             # Linear technique encoding
+│   ├── greedy_preference.lp          # Preference encoding
 │   ├── repair.lp                     # Repair process encoding
 │   └── temporal_predicate.lp         # Temporal predicate encoding (Allen's interval algebra relations, Vilain's point interval algebra relations, etc.)
 ├── execution/                        # Execution folder
@@ -71,7 +71,7 @@ To view usage instructions or available options for CASPER, use the --help flag:
 ```
 The output:
 ```bash
-CASPER version 1.0.2
+CASPER version 1.0.3
 Usage: ./execution/run_casper.sh --app=APP_NAME [OPTIONS]
 
 Required:
@@ -222,7 +222,7 @@ In addition to event inference, CASPER provides built-in support for:
   
   - `preferred`: keep only the highest-confidence, longest-valid segments
   
-  - `cautious`: prioritize minimal but safe segments
+  - `cautious (Clingo cautious reasoning)`: retain only segments that appear in all repairs, yielding minimal but guaranteed-safe intervals
 
 ---
 
