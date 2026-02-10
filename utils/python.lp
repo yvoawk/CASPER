@@ -1,5 +1,5 @@
 % ==============================================================================
-% CASPER version v1.0.3
+% CASPER version v1.1.0
 % Author: Yvon K. Awuklu
 % Description: Clingo, python embedded utility functions for CASPER
 % ==============================================================================

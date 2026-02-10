@@ -4,42 +4,43 @@
 
 # CASPER (Clinical ASP-based Event Recognition)
 [![CASPER badge](https://img.shields.io/badge/CASPER-ready%20to%20use-brightgreen)](https://github.com/yvoawk/CASPER)
-[![ASP badge](https://img.shields.io/badge/Build%20with-♥%20and%20ASP-red)](https://github.com/yvoawk/CASPER)
-[![licence](https://img.shields.io/badge/Licence-MIT%20%2B%20file%20LICENSE-blue)](https://github.com/yvoawk/CASPER/blob/master/LICENSE)
+[![ASP badge](https://img.shields.io/badge/Build%20with-ASP-red)](https://github.com/yvoawk/CASPER)
+[![license](https://img.shields.io/badge/License-MIT-blue)](https://github.com/yvoawk/CASPER/blob/master/LICENSE)
 
-CASPER leverages the expressive power of ASP to model medical knowledge and infer clinical events from sequences of raw observations.
-CASPER encodes rules that capture both expert knowledge and temporal patterns, enabling the identification of clinically meaningful events—including their initiation and termination—even in the presence of imperfect data.
-An ASP solver (`Clingo`) is used to compute answer sets, which correspond to valid interpretations of events based on the encoded rules and the provided observations.
+CASPER is an Answer Set Programming (ASP)–based framework for inferring high-level temporal events from raw, timestamped observations. It integrates domain knowledge, temporal reasoning, and confidence propagation to identify event initiation and termination intervals, while explicitly handling imperfect data through a dedicated temporal repair pipeline.
 
-## 📂 Repository Structure  
+## 📂 Repository Structure
+
 ```text
 CASPER/
-├── app/                              # Application directory
-│   └── lung_cancer/                  # Use case on lung cancer
-│       └── domain/                   # Folder for domain knowledge
-│       │   └── atemporal_facts.lp    # Relevant atemporal domain knowledge file
-│       ├── facts/                    # Folder for facts
-│       │   └── facts.lp              # Observation facts file
-│       └── user_parameters/          # Folder for event description
-│           ├── simple_event.lp       # Simple event definition file
-│           └── meta_event.lp         # Meta-event defintion file
-├── encoding/                         # CASPER system core
-│   ├── np_simple_event.lp            # Expansion technique encoding
-│   ├── p_simple_event.lp             # Linear technique encoding
-│   ├── greedy_preference.lp          # Preference encoding
-│   ├── repair.lp                     # Repair process encoding
-│   └── temporal_predicate.lp         # Temporal predicate encoding (Allen's interval algebra relations, Vilain's point interval algebra relations, etc.)
-├── execution/                        # Execution folder
-│   ├── parameters1.lp    
-│   ├── parameters2.lp            
-│   ├── parameters3.lp           
-│   └── run_casper.sh                 # CASPER execution script
-├── utils/                            # Utility folder
-│   ├── auxiliary.lp                  # Helper predicate
-│   ├── filter_fact.py                # Python function to filter observation facts  
-│   ├── process_answer.py             # Processeing meta-event script      
-│   └── python.lp                     # Embedded Python utility function
-└── LICENSE                           # License file
+├── app/                              # Clinical use-case applications
+│   └── lung_cancer/
+│       ├── domain/
+│       │   └── atemporal_facts.lp
+│       ├── facts/
+│       │   └── facts.lp
+│       └── user_parameters/
+│           ├── simple_event.lp
+│           └── meta_event.lp
+├── encoding/                         # Core ASP encodings
+│   ├── np_simple_event.lp
+│   ├── p_simple_event.lp
+│   ├── repair.lp
+│   ├── greedy_preference.lp
+│   ├── temporal_predicate.lp
+│   └── ...
+├── execution/
+│   ├── parameters1.lp
+│   ├── parameters2.lp
+│   ├── parameters3.lp
+│   └── run_casper.sh                 # Main entrypoint
+├── utils/
+│   ├── auxiliary.lp
+│   ├── filter_fact.py
+│   ├── process_answers.py
+│   └── python.lp
+├── results/                          # Generated outputs
+└── LICENSE
 ```
 
 ## 🚀 Quick Start
@@ -58,6 +59,7 @@ conda create -n casper-env python=3.12.9
 conda activate casper-env
 conda install -c conda-forge clingo=5.8.0
 ```
+
 ### ▶️ Basic Execution
 An example application focused on `lung cancer` can be found in the `./app` directory.
 ```bash
@@ -78,19 +80,63 @@ Required:
   --app=APP_NAME           Name of the app (must match a folder in ./app/ and not contain spaces)
 
 Options:
-  --repair=(yes|no)        Enable or disable repair mode (default: no)
-  --timeline=MODE          Timeline mode (naive|preferred|cautious) (default: naive)
-                           Note: 'preferred' & 'cautious' can only be used with --repair=yes
-  --thread-N=N             Number of parallel threads (default: 1)
-  --window=start-end       Time window for event recognition (format: start-end, both numeric)
+  --repair=(yes|no)        Enable or disable temporal repair mode (default: no).
+  --timeline=<MODE>        Timeline mode (`naive|preferred|cautious`, default: naive).
+  --thread-N=<N>           Number of parallel threads (integer >= 1, default: 1).
+  --window=<start-end>       Numeric epoch window filter for observations. (format: start-end, both numeric)
                             Example: --window=1609459200-1609545600
                             Note: start must be less than end
-  --unit=seconds           Units of the time used (default: seconds)
-                           Other options: minutes, hours, days
-  --verbose                Print configuration before execution
-  --help                   Show helper message
-  --version                Show CASPER version information
+  --unit=<seconds|minutes|hours|days>  Time unit constant used by encodings (default: `seconds`).
+  --verbose                Print execution configuration before execution.
+  --help                   Print usage text.
+  --version                Print version information.
 ```
+
+> ⚠️ **Note**:
+
+> - `preferred` and `cautious` require `--repair=yes`.
+> - When `--repair=yes` is set without `preferred` or `cautious`, the script internally switches to a `consistent` output timeline.
+
+### Execution Examples
+
+Simple events + meta-events (no repair):
+
+```bash
+./execution/run_casper.sh --app=lung_cancer
+```
+
+Repair mode with preferred timeline:
+
+```bash
+./execution/run_casper.sh --app=lung_cancer --repair=yes --timeline=preferred
+```
+
+Repair mode with cautious reasoning:
+
+```bash
+./execution/run_casper.sh --app=lung_cancer --repair=yes --timeline=cautious
+```
+
+Run with a time window and alternate unit:
+
+```bash
+./execution/run_casper.sh \
+  --app=lung_cancer \
+  --window=447072-447934 \
+  --unit=hours \
+  --verbose
+```
+
+### Output Layout
+
+Results are written to:
+
+```text
+results/<app>/<timeline>/results_<YYYY-MM-DD_HH-MM-SS>.json
+```
+
+Timeline subfolders are created automatically (`naive`, `preferred`, `cautious`, or `consistent`).
+
 ## 📦 How to Add Your Application
 
 To add a new application, create a folder named after your application (no spaces) in the `./app` directory. This folder should follow the structure below:
@@ -119,7 +165,8 @@ To add a new application, create a folder named after your application (no space
 - `user_parameters/meta_event.lp` *(optional)*:  
   Defines **meta-events**, if your application includes any.
 
-## 🧠 Predicates
+## 🧠 Core Predicates
+CASPER uses a set of core predicates to represent observations, events, and temporal relationships. These predicates are used across the encodings and should be familiar to users defining their own applications.
 
 ### Observation
 

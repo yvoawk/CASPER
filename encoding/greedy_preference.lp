@@ -1,5 +1,5 @@
 % ==============================================================================
-% CASPER version v1.0.3
+% CASPER version v1.1.0
 % Author: Yvon K. Awuklu
 % Description: Greedy preference encoding
 % See Theorem 5 in the paper for details
@@ -32,6 +32,3 @@ temporal_conflict_with_lower_level(N, P, E, (Start2, End), L2) :-
 rep_event(ID, N, P, E, (Start, End), L) :-
     event(ID, N, P, E, (Start, End), L),
     not temporal_conflict_with_lower_level(N, P, E, (Start, End), L).
-
-%#show event(ID, N, P, E, (Start, End), L) : rep_event(ID, N, P, E, (Start, End), L).
-%#show event/5.

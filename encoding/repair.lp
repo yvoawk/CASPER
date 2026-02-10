@@ -1,5 +1,5 @@
 % ==============================================================================
-% CASPER version v1.0.3
+% CASPER version v1.1.0
 % Author: Yvon K. Awuklu
 % Description: temporal repair encoding
 % See Section 2.2 & Section 2.3 (Definitions 6, 7, 8) in the paper for details
