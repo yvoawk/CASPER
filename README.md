@@ -80,16 +80,16 @@ Required:
   --app=APP_NAME           Name of the app (must match a folder in ./app/ and not contain spaces)
 
 Options:
-  --repair=(yes|no)        Enable or disable temporal repair mode (default: no).
-  --timeline=<MODE>        Timeline mode (`naive|preferred|cautious`, default: naive).
-  --thread-N=<N>           Number of parallel threads (integer >= 1, default: 1).
-  --window=<start-end>       Numeric epoch window filter for observations. (format: start-end, both numeric)
-                            Example: --window=1609459200-1609545600
-                            Note: start must be less than end
-  --unit=<seconds|minutes|hours|days>  Time unit constant used by encodings (default: `seconds`).
-  --verbose                Print execution configuration before execution.
-  --help                   Print usage text.
-  --version                Print version information.
+  --repair=(yes|no)                     Enable or disable temporal repair mode (default: no).
+  --timeline=<MODE>                     Timeline mode (`naive|preferred|cautious`, default: naive).
+  --thread-N=<N>                        Number of parallel threads (integer >= 1, default: 1).
+  --window=<start-end>                  Numeric epoch window filter for observations. (format: start-end, both numeric)
+                                          Example: --window=1609459200-1609545600
+                                          Note: start must be less than end
+  --unit=<seconds|minutes|hours|days>   Time unit constant used by encodings (default: `seconds`).
+  --verbose                             Print execution configuration before execution.
+  --help                                Print usage text.
+  --version                             Print version information.
 ```
 
 > ⚠️ **Note**:
